@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // fontSize: 17,
       ),
 
-      initialRoute:    '/home',
+      initialRoute:    '/loginpage',
 
       routes: {
         '/home': (context) => HomePage(),

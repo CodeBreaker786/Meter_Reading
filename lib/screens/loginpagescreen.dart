@@ -17,14 +17,21 @@ class _LoginPageState extends State<LoginPage> {
         child: ResponsiveWidget(
           mobile: Column(
             children: [
-              SizedBox(height: 40,),
+              SizedBox(
+                height: 40,
+              ),
               LoginPageWidget(),
+              SizedBox(
+                height: 40,
+              ),
             ],
           ),
           tab: Column(
             children: [
-              SizedBox(height: 40,),
-             LoginPageTabWidget(),
+              SizedBox(
+                height: 40,
+              ),
+              LoginPageTabWidget(),
             ],
           ),
         ),
