@@ -1,10 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:metr_reading/login_wrapper.dart';
 import 'package:metr_reading/screens/clientsetuppagescreen.dart';
 import 'package:metr_reading/screens/home.dart';
 import 'package:metr_reading/screens/loginpagescreen.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+    
+
   runApp(MyApp());
 }
 
@@ -30,22 +36,15 @@ class MyApp extends StatelessWidget {
         // fontFamily: 'RoobertTRIAL-Regular',
         // fontSize: 17,
       ),
-
-      initialRoute:    '/loginpage',
-
+      initialRoute: '/wraper',
       routes: {
+        '/wraper': (context) => LoginWrapper(),
         '/home': (context) => HomePage(),
-        '/loginpage':(context) => LoginPage(),
-        '/newclient':(context) => ClientSetUpPage(),
-
-
+        '/loginpage': (context) => LoginPage(),
+        '/newclient': (context) => ClientSetUpPage(),
       },
     );
   }
 }
-
-
-
-
 
 // }

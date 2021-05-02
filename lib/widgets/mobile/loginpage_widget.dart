@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:metr_reading/screens/home.dart';
@@ -8,7 +9,15 @@ class LoginPageWidget extends StatefulWidget {
 }
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool hidePassword = true;
+  bool isLoading = false;
+  @override
+  void deactivate() {
+    isLoading = false;
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +96,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
         Padding(
           padding: const EdgeInsets.only(left: 40, right: 40),
           child: TextFormField(
+            controller: _emailController,
             decoration: InputDecoration(
                 prefixIcon: Icon(
                   Fontisto.email,
@@ -113,6 +123,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
         Padding(
           padding: const EdgeInsets.only(left: 40, right: 40),
           child: TextFormField(
+            controller: _passwordController,
             obscureText: hidePassword,
             decoration: InputDecoration(
                 prefixIcon: Icon(
@@ -126,18 +137,15 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                     });
                   },
                   color: Colors.white,
-                  icon: Icon(hidePassword
-                      ? Icons.visibility_off
-                      : Icons.visibility),
+                  icon: Icon(
+                      hidePassword ? Icons.visibility_off : Icons.visibility),
                 ),
-
                 border: OutlineInputBorder(
                   // width: 0.0 produces a thin "hairline" border
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                   borderSide: BorderSide.none,
                   //borderSide: const BorderSide(),
                 ),
-
                 hintStyle: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -147,16 +155,22 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 hintText: 'Password'),
           ),
         ),
-
-        SizedBox(height: 15,),
-
+        SizedBox(
+          height: 15,
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
           child: Container(
             height: 50.0,
             child: GestureDetector(
-              onTap: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => HomePage()), (route) => true);
+              onTap: () async {
+             UserCredential user=  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim());
+                // Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => HomePage()),
+                //     (route) => true);
               },
               child: Container(
                 decoration: BoxDecoration(

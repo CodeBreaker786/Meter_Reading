@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "106121839902",
+    "project_id": "metter-reading-8a6a0",
+    "storage_bucket": "metter-reading-8a6a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106121839902:android:0a9e39379b733e6294b50f",
+        "android_client_info": {
+          "package_name": "com.example.metr_reading"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106121839902-ba1q52gajk81l2kgpraa9kmcv0h3elfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY9G7pphpvrgnSkjGwc4BQZW6JOF8TYCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106121839902-ba1q52gajk81l2kgpraa9kmcv0h3elfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
