@@ -1,7 +1,9 @@
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:metr_reading/widgets/mobile/clientsetupaddmeterextended_widget.dart';
 import 'package:metr_reading/widgets/mobile/clientsetupextendedaddmeter_widget.dart';
+import 'package:metr_reading/widgets/mobile/globle_textFiled.dart';
 
 class ClientSetupPageWidget extends StatefulWidget {
   @override
@@ -27,6 +29,13 @@ class SurveyCarriedOutByCategory {
 }
 
 class _ClientSetupPageWidgetState extends State<ClientSetupPageWidget> {
+  final GlobalKey<ExpansionTileCardState> cardA = GlobalKey();
+  TextEditingController _editingControllerClient = TextEditingController();
+  TextEditingController _editingControllerSite = TextEditingController();
+  TextEditingController _editingControllerBuilding = TextEditingController();
+  TextEditingController _editingControllerCustomer = TextEditingController();
+  TextEditingController _editingControllerCarried = TextEditingController();
+
   bool widgetSecondVisible = false;
 
   void showWidget() {
@@ -111,318 +120,74 @@ class _ClientSetupPageWidgetState extends State<ClientSetupPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        //field one code
-        Row(
-          children: [
-            simpleContainerAdd(),
-          ],
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        //textfieldforclient
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25),
-          child: TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide.none,
-                  //borderSide: const BorderSide(),
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.lightGreen[600],
-                hintText: 'Client:'),
+    return Scaffold(
+      backgroundColor: Colors.white.withOpacity(.9),
+      appBar: AppBar(
+        title: Text(
+          'Client Site Setup',
+          style: TextStyle(
+            fontSize: 25,
           ),
         ),
-
-        SizedBox(height: 10),
-
-        //textfieldforsite
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25),
-          child: TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide.none,
-                  //borderSide: const BorderSide(),
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.lightGreen[600],
-                hintText: 'Site:'),
-          ),
-        ),
-
-
-        SizedBox(
-          height: 10,
-        ),
-
-        //textfieldforbuilding
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25),
-          child: TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide.none,
-                  //borderSide: const BorderSide(),
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.lightGreen[600],
-                hintText: 'Building:'),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-
-        //textfieldforcustomerreferenceno
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25),
-          child: TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide.none,
-                  //borderSide: const BorderSide(),
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.lightGreen[600],
-                hintText: 'Customer Reference No:'),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-
-        //surverycarriedoutonbehalfof
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25),
-          child: TextFormField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide.none,
-                  //borderSide: const BorderSide(),
-                ),
-                hintStyle: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-                filled: true,
-                fillColor: Colors.lightGreen[600],
-                hintText: 'Carried out on behalf of:'),
-          ),
-        ),
-
-        //field one ended here
-
-        SizedBox(
-          height: 10,
-        ),
-
-        //field two start here
-        Padding(
-          padding: const EdgeInsets.only(left: 0),
-          child: Row(
-            children: [
-              GestureDetector(
-                child: simpleContainerAddTwo(),
-                onTap: showThirdWidget,
-              ),
-            ],
-          ),
-        ),
-
-        SizedBox(
-          height: 10,
-        ),
-
-        //Contactnamefield
-        Visibility(
-          maintainSize: false,
-          maintainAnimation: true,
-          maintainState: true,
-          visible: widgetThirdVisible,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 18),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'Contact Name:'),
-                ),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-              //emailfield
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'E-mail:'),
-                ),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //phonenofield
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'Phone No:'),
-                ),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //survey carried out by drop down menu
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.lightGreen[600],
+              ExpansionTileCard(
+                animateTrailing: true,
+                finalPadding: EdgeInsets.symmetric(vertical: 12),
+                expandedTextColor: Colors.green,
+                title: Text(
+                  'Your Title ',
+                  style: TextStyle(
+                    fontSize: 25,
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
-                    child: DropdownButton(
-                      isExpanded: true,
-                      iconEnabledColor: Colors.white,
-                      dropdownColor: Colors.grey[600],
-                      value: _selectedSurveyCarriedOutByCategory,
-                      items: _dropdownMenuItemsSurvey,
-                      underline: Container(color: Colors.transparent),
-                      onChanged: onChangedSurveyCarriedOutByitem,
-                      iconSize: 30,
-                      style: TextStyle(
-                        color: Colors.white,
-                        letterSpacing: 0.5,
-                        fontSize: 18,
-                      ),
+                ),
+                children: [
+                  GlobalTextField(
+                    hintText: 'Client:',
+                    controller: _editingControllerClient,
+                  ),
+                  GlobalTextField(
+                    hintText: 'Site:',
+                    controller: _editingControllerSite,
+                  ),
+                  GlobalTextField(
+                    hintText: 'Building:',
+                    controller: _editingControllerBuilding,
+                  ),
+                  GlobalTextField(
+                    hintText: 'Customer Reference No:',
+                    controller: _editingControllerCustomer,
+                  ),
+                  GlobalTextField(
+                    hintText: 'Carried out on behalf of:',
+                    controller: _editingControllerCarried,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+
+              //field one ended here
+
+              SizedBox(
+                height: 10,
+              ),
+
+              //field two start here
+              Padding(
+                padding: const EdgeInsets.only(left: 0),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      child: simpleContainerAddTwo(),
+                      onTap: showThirdWidget,
                     ),
-                  ),
-                ),
-              ),
-
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //datesurveycarriedoutbyfield
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'Date Survey Carried Out:'),
-                ),
-              ),
-
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //accompainedbyfield
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'Accompained By:'),
+                  ],
                 ),
               ),
 
@@ -430,117 +195,57 @@ class _ClientSetupPageWidgetState extends State<ClientSetupPageWidget> {
                 height: 10,
               ),
 
-              //Siteengineerfield
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'Site Engineer:'),
-                ),
-              ),
-
-              SizedBox(
-                height: 10,
-              ),
-
-              //siteengineeremail
-              Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        // width: 0.0 produces a thin "hairline" border
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        borderSide: BorderSide.none,
-                        //borderSide: const BorderSide(),
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                      filled: true,
-                      fillColor: Colors.lightGreen[600],
-                      hintText: 'Site Engineer E-mail:'),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        Row(
-          children: [
-            GestureDetector(
-              child: simpleContainerAddThree(),
-              onTap: showWidget,
-            ),
-          ],
-        ),
-
-        SizedBox(
-          height: 10,
-        ),
-
-        Visibility(
-          maintainSize: false,
-          maintainAnimation: true,
-          maintainState: true,
-          visible: widgetSecondVisible,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
-            child: Container(
-              height: 250,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.lightGreen[600]),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
+              //Contactnamefield
+              Visibility(
+                maintainSize: false,
+                maintainAnimation: true,
+                maintainState: true,
+                visible: widgetThirdVisible,
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 10, top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: hideWidget,
-                            child: Text(
-                              'Hide',
-                              style: TextStyle(
-                                color: Colors.lightGreen[600],
-                                fontSize: 16,
-                              ),
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
                             ),
-                          ),
-                        ],
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'Contact Name:'),
                       ),
                     ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+                    //emailfield
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Test Meter Used',
-                            style: TextStyle(
-                              color: Colors.lightGreen[600],
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
                             ),
-                          ),
-                        ],
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'E-mail:'),
                       ),
                     ),
 
@@ -548,263 +253,479 @@ class _ClientSetupPageWidgetState extends State<ClientSetupPageWidget> {
                       height: 10,
                     ),
 
-                    //meterselectionbuttononly
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        RaisedButton(
-                          textColor: Colors.white,
-                          color: Colors.lightGreen[600],
-                          child: Text(
-                            "Thermal",
-                            style: TextStyle(
+                    //phonenofield
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 18,
                               color: Colors.white,
-                              fontSize: 20,
                             ),
-                          ),
-                          onPressed: () {},
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        RaisedButton(
-                          textColor: Colors.white,
-                          color: Colors.lightGreen[600],
-                          child: Text(
-                            "Electrical",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                          onPressed: () {},
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        RaisedButton(
-                          textColor: Colors.white,
-                          color: Colors.lightGreen[600],
-                          child: Text(
-                            "Other",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                          ),
-                          onPressed: () {},
-                          shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(
-                              20.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    //meterselectionbuttoncodeendhere
-
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    //selectioncontainer
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 35,
-                          width: 100,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.lightGreen[600],
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Center(
-                                    child: Text(
-                                      "Model",
-                                      style: TextStyle(
-                                        color: Colors.lightGreen[600],
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Container(
-                          height: 35,
-                          width: 100,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.lightGreen[600],
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Center(
-                                    child: Text(
-                                      "Make",
-                                      style: TextStyle(
-                                        color: Colors.lightGreen[600],
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Container(
-                          height: 35,
-                          width: 100,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.lightGreen[600],
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Center(
-                                    child: Text(
-                                      "Serial No",
-                                      style: TextStyle(
-                                        color: Colors.lightGreen[600],
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'Phone No:'),
+                      ),
                     ),
 
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            icon: Icon(
-                              MaterialIcons.attach_file,
-                              size: 60,
-                              color: Colors.lightGreen[600],
-                            ),
-                            onPressed: null),
-                        SizedBox(
-                          width: 15,
+                    //survey carried out by drop down menu
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: Container(
+                        height: 55,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.lightGreen[600],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Text(
-                            'Attach Calibration\nCertificate',
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, top: 5),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            iconEnabledColor: Colors.white,
+                            dropdownColor: Colors.grey[600],
+                            value: _selectedSurveyCarriedOutByCategory,
+                            items: _dropdownMenuItemsSurvey,
+                            underline: Container(color: Colors.transparent),
+                            onChanged: onChangedSurveyCarriedOutByitem,
+                            iconSize: 30,
                             style: TextStyle(
-                              color: Colors.lightGreen[600],
+                              color: Colors.white,
+                              letterSpacing: 0.5,
                               fontSize: 18,
                             ),
                           ),
-                        )
-                      ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    //datesurveycarriedoutbyfield
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'Date Survey Carried Out:'),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    //accompainedbyfield
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'Accompained By:'),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    //Siteengineerfield
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'Site Engineer:'),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    //siteengineeremail
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25, right: 25),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              // width: 0.0 produces a thin "hairline" border
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                              //borderSide: const BorderSide(),
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                            filled: true,
+                            fillColor: Colors.lightGreen[600],
+                            hintText: 'Site Engineer E-mail:'),
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
+
+              Row(
+                children: [
+                  GestureDetector(
+                    child: simpleContainerAddThree(),
+                    onTap: showWidget,
+                  ),
+                ],
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+
+              Visibility(
+                maintainSize: false,
+                maintainAnimation: true,
+                maintainState: true,
+                visible: widgetSecondVisible,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  child: Container(
+                    height: 250,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.lightGreen[600]),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10, top: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: hideWidget,
+                                  child: Text(
+                                    'Hide',
+                                    style: TextStyle(
+                                      color: Colors.lightGreen[600],
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 10,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Test Meter Used',
+                                  style: TextStyle(
+                                    color: Colors.lightGreen[600],
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 10,
+                          ),
+
+                          //meterselectionbuttononly
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RaisedButton(
+                                textColor: Colors.white,
+                                color: Colors.lightGreen[600],
+                                child: Text(
+                                  "Thermal",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                onPressed: () {},
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(20.0),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              RaisedButton(
+                                textColor: Colors.white,
+                                color: Colors.lightGreen[600],
+                                child: Text(
+                                  "Electrical",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                onPressed: () {},
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(20.0),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              RaisedButton(
+                                textColor: Colors.white,
+                                color: Colors.lightGreen[600],
+                                child: Text(
+                                  "Other",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                onPressed: () {},
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(
+                                    20.0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          //meterselectionbuttoncodeendhere
+
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          //selectioncontainer
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 35,
+                                width: 100,
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.lightGreen[600],
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Center(
+                                          child: Text(
+                                            "Model",
+                                            style: TextStyle(
+                                              color: Colors.lightGreen[600],
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 100,
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.lightGreen[600],
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Center(
+                                          child: Text(
+                                            "Make",
+                                            style: TextStyle(
+                                              color: Colors.lightGreen[600],
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Container(
+                                height: 35,
+                                width: 100,
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.lightGreen[600],
+                                      ),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Center(
+                                          child: Text(
+                                            "Serial No",
+                                            style: TextStyle(
+                                              color: Colors.lightGreen[600],
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(
+                            height: 20,
+                          ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  icon: Icon(
+                                    MaterialIcons.attach_file,
+                                    size: 60,
+                                    color: Colors.lightGreen[600],
+                                  ),
+                                  onPressed: null),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: Text(
+                                  'Attach Calibration\nCertificate',
+                                  style: TextStyle(
+                                    color: Colors.lightGreen[600],
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              //add meter code start here
+
+              GestureDetector(
+                child: simpleContainerAddFour(),
+                onTap: showFourWidget,
+              ),
+              Visibility(
+                maintainSize: false,
+                maintainAnimation: true,
+                maintainState: true,
+                visible: widgetFourVisible,
+                child: ClientSetupWidgetExtended(),
+              ),
+
+              SizedBox(
+                height: 10,
+              ),
+              ClientSetupAddMeterExtended(),
+            ],
           ),
         ),
-
-        //add meter code start here
-
-        GestureDetector(
-            child: simpleContainerAddFour(),
-          onTap: showFourWidget,
-        ),
-         Visibility(
-             maintainSize: false,
-             maintainAnimation: true,
-             maintainState: true,
-             visible: widgetFourVisible,
-             child: ClientSetupWidgetExtended(),
-         ),
-
-        SizedBox(height: 10,),
-        ClientSetupAddMeterExtended(),
-
-
-      ],
+      ),
     );
   }
-}
-
-Widget simpleContainerAdd() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 10, top: 20),
-    child: Container(
-      height: 45,
-      width: 45,
-      decoration: BoxDecoration(
-        color: Colors.lightGreen[600],
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        heightFactor: 30,
-        widthFactor: 30,
-        child: Icon(
-          MaterialCommunityIcons.pencil,
-          color: Colors.white,
-          size: 38,
-        ),
-      ),
-    ),
-  );
 }
 
 Widget simpleContainerAddTwo() {
@@ -876,11 +797,13 @@ Widget simpleContainerAddFour() {
           ),
         ),
       ),
-      SizedBox(width: 10,),
+      SizedBox(
+        width: 10,
+      ),
       Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Text(
-            'Add Meter',
+          'Add Meter',
           style: TextStyle(
             color: Colors.lightGreen[600],
             fontSize: 25,

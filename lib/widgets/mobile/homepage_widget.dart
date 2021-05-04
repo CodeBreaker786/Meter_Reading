@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:metr_reading/screens/clientsetuppagescreen.dart';
+ 
+import 'package:metr_reading/widgets/mobile/clientsetuppage_widget.dart';
 
 class HomePageWidget extends StatefulWidget {
   @override
@@ -7,19 +8,20 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  bool widgetVisible = false ;
+  bool widgetVisible = false;
 
-  void showWidget(){
+  void showWidget() {
     setState(() {
-      widgetVisible = true ;
+      widgetVisible = true;
     });
   }
 
-  void hideWidget(){
+  void hideWidget() {
     setState(() {
-      widgetVisible = false ;
+      widgetVisible = false;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,11 +29,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50, top: 150),
           child: Container(
-            height: 50.0,
             child: GestureDetector(
               onTap: () {
-
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ClientSetUpPage()), (route) => true);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ClientSetupPageWidget()),
+                );
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -44,14 +47,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Center(
-                      child: Text(
-                        "Create New Report",
-                        style: TextStyle(
-                          color: Colors.lightGreen[600],
-                          fontFamily: 'Montserrat',
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Create New Report",
+                          style: TextStyle(
+                            color: Colors.lightGreen[600],
+                            fontFamily: 'Montserrat',
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                          ),
                         ),
                       ),
                     ),
@@ -62,13 +68,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           ),
         ),
 
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         //Button for existing report
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
           child: Container(
-            height: 50.0,
             child: GestureDetector(
               onTap: showWidget,
               child: Container(
@@ -82,14 +89,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Center(
-                      child: Text(
-                        "Open Existing Report",
-                        style: TextStyle(
-                          color: Colors.lightGreen[600],
-                          fontFamily: 'Montserrat',
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Open Existing Report",
+                          style: TextStyle(
+                            color: Colors.lightGreen[600],
+                            fontFamily: 'Montserrat',
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1,
+                          ),
                         ),
                       ),
                     ),
@@ -100,8 +110,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           ),
         ),
 
-        SizedBox(height: 50,),
-
+        SizedBox(
+          height: 50,
+        ),
 
         Visibility(
             maintainSize: true,
@@ -115,74 +126,59 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Row(
                       children: [
-
-
-
                         textClient(),
                         clientTextField(),
                       ],
                     ),
                     Padding(
                       padding:
-                      const EdgeInsets.only(left: 145, right: 15, top: 5),
+                          const EdgeInsets.only(left: 145, right: 15, top: 5),
                       child: Divider(
                         color: Colors.lightGreen[600],
                       ),
                     ),
-
                     Row(
                       children: [
                         textSite(),
-
-
-
                         siteTextField(),
-
                       ],
                     ),
                     Padding(
                       padding:
-                      const EdgeInsets.only(left: 145, right: 15, top: 5),
+                          const EdgeInsets.only(left: 145, right: 15, top: 5),
                       child: Divider(
                         color: Colors.lightGreen[600],
                       ),
                     ),
-
                     Row(
                       children: [
-
-
-
                         textBuilding(),
                         buildingTextField(),
                       ],
                     ),
                     Padding(
                       padding:
-                      const EdgeInsets.only(left: 145, right: 15, top: 5),
+                          const EdgeInsets.only(left: 145, right: 15, top: 5),
                       child: Divider(
                         color: Colors.lightGreen[600],
                       ),
                     ),
-
                     Row(
                       children: [
-
-
-
                         textSupplyReference(),
                         supplyReferenceTextField(),
                       ],
                     ),
                     Padding(
                       padding:
-                      const EdgeInsets.only(left: 145, right: 15, top: 5),
+                          const EdgeInsets.only(left: 145, right: 15, top: 5),
                       child: Divider(
                         color: Colors.lightGreen[600],
                       ),
                     ),
-                    SizedBox(height: 15,),
-
+                    SizedBox(
+                      height: 15,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -195,7 +191,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             borderRadius: new BorderRadius.circular(20.0),
                           ),
                         ),
-                        SizedBox(width: 100,),
+                        SizedBox(
+                          width: 100,
+                        ),
                         RaisedButton(
                           textColor: Colors.white,
                           color: Colors.lightGreen[600],
@@ -208,9 +206,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ],
                     )
                   ],
-                )
-            )
-        ),
+                ))),
         //
         // RaisedButton(
         //   child: Text('Hide Widget on Button Click'),
@@ -229,9 +225,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         // ),
       ],
     );
-
   }
-
 }
 
 Widget textClient() {

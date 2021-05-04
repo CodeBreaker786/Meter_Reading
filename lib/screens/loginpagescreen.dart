@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:metr_reading/widgets/mobile/loginpage_widget.dart';
-import 'package:metr_reading/widgets/responsive_widget.dart';
-import 'package:metr_reading/widgets/tab/loginpagetab_widget.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,29 +11,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: ResponsiveWidget(
-          mobile: Column(
-            children: [
-              SizedBox(
-                height: 40,
-              ),
-              LoginPageWidget(),
-              SizedBox(
-                height: 40,
-              ),
-            ],
-          ),
-          tab: Column(
-            children: [
-              SizedBox(
-                height: 40,
-              ),
-              LoginPageTabWidget(),
-            ],
-          ),
-        ),
-      ),
+      body: LoginPageWidget(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // Add your onPressed code here!
