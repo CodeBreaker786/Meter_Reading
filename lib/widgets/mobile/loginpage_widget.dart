@@ -167,10 +167,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
              UserCredential user=  await FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: _emailController.text.trim(),
                     password: _passwordController.text.trim());
-                // Navigator.pushAndRemoveUntil(
-                //     context,
-                //     MaterialPageRoute(builder: (context) => HomePage()),
-                //     (route) => true);
+                
               },
               child: Container(
                 decoration: BoxDecoration(
