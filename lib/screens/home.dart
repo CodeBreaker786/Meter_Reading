@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:metr_reading/widgets/mobile/homepage_widget.dart';
- 
- 
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,7 +29,9 @@ class _HomePageState extends State<HomePage> {
               Feather.settings,
               size: 28,
             ),
-            onPressed: () {},
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
           )
         ],
       ),
