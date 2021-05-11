@@ -59,112 +59,6 @@ class _ClientSetupAddMeterExtendedState
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //kwh
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "kWh",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-
-            SizedBox(
-              width: 5,
-            ),
-
-            //litres
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "Litres",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            //M3
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "M3",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            //other
-            //M3
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "Other",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-          ],
-        ),
-
         Padding(
           padding: const EdgeInsets.only(left: 10, top: 20),
           child: Row(
@@ -183,85 +77,6 @@ class _ClientSetupAddMeterExtendedState
 
         SizedBox(
           height: 10,
-        ),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "Main\nFiscal",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-
-            //checkmeter
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "Check Meter",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-
-            //submeter
-            Container(
-              width: 100,
-              height: 100,
-              child: Center(
-                child: Text(
-                  "Sub\nMeter",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(200),
-                ),
-                color: Colors.lightGreen[600],
-              ),
-            ),
-          ],
         ),
 
         SizedBox(
@@ -661,7 +476,9 @@ class _ClientSetupAddMeterExtendedState
             ),
           ),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         //picture column
         Column(
@@ -772,7 +589,6 @@ class _ClientSetupAddMeterExtendedState
                     ),
                   ),
                 ),
-
                 Text(
                   'Electric Meter',
                   style: TextStyle(
@@ -808,7 +624,6 @@ class _ClientSetupAddMeterExtendedState
                     ),
                   ),
                 ),
-
                 Text(
                   'Heat Meter',
                   style: TextStyle(
@@ -823,7 +638,9 @@ class _ClientSetupAddMeterExtendedState
         ),
         //meter selection heat or electirce code end here
 
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         //electric meter code
         Visibility(
@@ -894,7 +711,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -908,8 +725,9 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -947,10 +765,9 @@ class _ClientSetupAddMeterExtendedState
                             ),
                           ],
                         ),
-
-                        SizedBox(width: 30,),
-
-
+                        SizedBox(
+                          width: 30,
+                        ),
                         Column(
                           children: [
                             Container(
@@ -986,7 +803,9 @@ class _ClientSetupAddMeterExtendedState
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Column(
                       children: [
                         Container(
@@ -1021,7 +840,9 @@ class _ClientSetupAddMeterExtendedState
                       ],
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //CT Ratio on meter
 
@@ -1035,7 +856,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1049,8 +870,9 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //Breaker Rating
 
@@ -1064,7 +886,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1077,7 +899,6 @@ class _ClientSetupAddMeterExtendedState
                             hintText: 'Breaker Rating'),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -1086,7 +907,9 @@ class _ClientSetupAddMeterExtendedState
         ),
         //electrice meter code end here
 
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         //heat meter code
         Visibility(
@@ -1173,8 +996,10 @@ class _ClientSetupAddMeterExtendedState
                                   color: Colors.lightGreen[600],
                                 ),
                               ),
-                               SizedBox(height: 5,),
-                               Container(
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
                                 width: 80,
                                 height: 80,
                                 child: Center(
@@ -1204,7 +1029,6 @@ class _ClientSetupAddMeterExtendedState
                               ),
                             ],
                           ),
-
                           Expanded(
                             child: Column(
                               children: [
@@ -1217,8 +1041,8 @@ class _ClientSetupAddMeterExtendedState
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           // width: 0.0 produces a thin "hairline" border
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
                                           borderSide: BorderSide.none,
                                           //borderSide: const BorderSide(),
                                         ),
@@ -1231,8 +1055,9 @@ class _ClientSetupAddMeterExtendedState
                                         hintText: 'Add T1 Temperature'),
                                   ),
                                 ),
-
-                                SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                     left: 70,
@@ -1242,8 +1067,8 @@ class _ClientSetupAddMeterExtendedState
                                     decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           // width: 0.0 produces a thin "hairline" border
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
                                           borderSide: BorderSide.none,
                                           //borderSide: const BorderSide(),
                                         ),
@@ -1263,40 +1088,45 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-
-                    SizedBox(height: 10,),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: [
-                       Container(
-                         width: 130,
-                         height: 130,
-                         child: Center(
-                           child: Icon(
-                             EvilIcons.camera,
-                             color: Colors.white,
-                             size: 100,
-                           ),
-                         ),
-                         decoration: BoxDecoration(
-                           border: Border.all(width: 3),
-                           borderRadius: BorderRadius.all(
-                             Radius.circular(200),
-                           ),
-                           color: Colors.lightGreen[600],
-                         ),
-                       ),
-                       SizedBox(width: 20,),
-                       Text(
-                         'Add Thermal\nImage',
-                         style: TextStyle(
-                           color: Colors.lightGreen[600],
-                           fontSize: 25,
-                         ),
-                       )
-                     ],
-                   ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 130,
+                          height: 130,
+                          child: Center(
+                            child: Icon(
+                              EvilIcons.camera,
+                              color: Colors.white,
+                              size: 100,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 3),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(200),
+                            ),
+                            color: Colors.lightGreen[600],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text(
+                          'Add Thermal\nImage',
+                          style: TextStyle(
+                            color: Colors.lightGreen[600],
+                            fontSize: 25,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 70,
@@ -1308,7 +1138,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1321,8 +1151,9 @@ class _ClientSetupAddMeterExtendedState
                             hintText: 'Add Thermal Image No'),
                       ),
                     ),
-                    SizedBox(height: 10,),
-
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //K t one and two
                     Padding(
@@ -1336,7 +1167,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1350,7 +1181,9 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //Temperature check
                     Padding(
@@ -1363,7 +1196,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1377,7 +1210,9 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //Temperature check
                     Padding(
@@ -1390,7 +1225,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1404,7 +1239,9 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //volume on meter
                     Padding(
@@ -1417,7 +1254,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1431,7 +1268,9 @@ class _ClientSetupAddMeterExtendedState
                       ),
                     ),
 
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
 
                     //Volume on bms
                     Padding(
@@ -1444,7 +1283,7 @@ class _ClientSetupAddMeterExtendedState
                             border: OutlineInputBorder(
                               // width: 0.0 produces a thin "hairline" border
                               borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                               //borderSide: const BorderSide(),
                             ),
@@ -1457,7 +1296,6 @@ class _ClientSetupAddMeterExtendedState
                             hintText: 'Volume on BMS'),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -1466,7 +1304,9 @@ class _ClientSetupAddMeterExtendedState
         ),
         //heat meter code end here
 
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
 
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
@@ -1503,7 +1343,9 @@ class _ClientSetupAddMeterExtendedState
           ),
         ),
 
-        SizedBox(height: 30,),
+        SizedBox(
+          height: 30,
+        ),
 
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
@@ -1525,7 +1367,9 @@ class _ClientSetupAddMeterExtendedState
                       color: Colors.white,
                       size: 30,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Center(
                       child: Text(
                         "Generate Excel Report",
@@ -1545,7 +1389,9 @@ class _ClientSetupAddMeterExtendedState
           ),
         ),
 
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
@@ -1567,7 +1413,9 @@ class _ClientSetupAddMeterExtendedState
                       color: Colors.white,
                       size: 30,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Center(
                       child: Text(
                         "Generate PDF Report",
@@ -1587,7 +1435,9 @@ class _ClientSetupAddMeterExtendedState
           ),
         ),
 
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
@@ -1609,7 +1459,9 @@ class _ClientSetupAddMeterExtendedState
                       color: Colors.white,
                       size: 30,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Center(
                       child: Text(
                         "Generate Note Report",
@@ -1629,8 +1481,9 @@ class _ClientSetupAddMeterExtendedState
           ),
         ),
 
-
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
 
         Padding(
           padding: const EdgeInsets.only(left: 50, right: 50),
@@ -1652,7 +1505,9 @@ class _ClientSetupAddMeterExtendedState
                       color: Colors.white,
                       size: 30,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Center(
                       child: Text(
                         "Generate Fault Report",
@@ -1671,9 +1526,6 @@ class _ClientSetupAddMeterExtendedState
             ),
           ),
         ),
-
-
-
       ],
     );
   }
