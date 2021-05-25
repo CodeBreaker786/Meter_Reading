@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class GlobalTextField extends StatelessWidget {
   final hintText;
   final controller;
-  GlobalTextField({Key key, @required this.hintText, @required this.controller})
+  Function validator;
+  GlobalTextField({Key key, @required this.hintText, @required this.controller,this.validator})
       : super(key: key);
 
   @override
@@ -13,6 +14,7 @@ class GlobalTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         cursorWidth: 2,
+        validator: validator,
         cursorColor: Colors.white54,
         cursorRadius: Radius.circular(5),
         style: TextStyle(color: Colors.white, fontSize: 18),

@@ -5,6 +5,8 @@ class GlobalDropdwon extends StatelessWidget {
   String hintText;
   Function getItemList;
   Function onChanged;
+  Function validator;
+
   TextEditingController textEditingController;
 
   GlobalDropdwon(
@@ -12,6 +14,7 @@ class GlobalDropdwon extends StatelessWidget {
       @required this.hintText,
       @required this.getItemList,
       @required this.onChanged,
+      this.validator,
       @required this.textEditingController})
       : super(key: key);
 
@@ -19,7 +22,7 @@ class GlobalDropdwon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      child: TypeAheadField(
+      child: TypeAheadFormField(
           textFieldConfiguration: TextFieldConfiguration(
               controller: textEditingController,
               cursorColor: Colors.white70,
@@ -37,6 +40,7 @@ class GlobalDropdwon extends StatelessWidget {
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
               color: Colors.lightGreen[200],
               borderRadius: BorderRadius.all(Radius.circular(12))),
+              validator: validator,
           itemBuilder: (context, suggestion) {
             return ListTile(
               title: Text(suggestion),
