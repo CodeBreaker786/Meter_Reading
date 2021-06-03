@@ -1,4 +1,5 @@
 import 'package:metr_reading/models/report.dart';
+import 'package:metr_reading/models/report.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:pdf/widgets/document.dart';
@@ -18,8 +19,7 @@ reportView({context, List<Report> reports}) async {
             alignment: Alignment.centerRight,
             margin: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
             padding: const EdgeInsets.only(bottom: 3.0 * PdfPageFormat.mm),
-            decoration: const BoxDecoration(),
-            child: Text('Report',
+            child: Text('Meter Survey report',
                 style: Theme.of(context)
                     .defaultTextStyle
                     .copyWith(color: PdfColors.grey)));
@@ -39,25 +39,103 @@ reportView({context, List<Report> reports}) async {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Center(
-                        child: Text('Report', textScaleFactor: 2),
-                      ),
+                      Text('Meter Survey report', textScaleFactor: 2),
                       PdfLogo()
                     ])),
-            Header(level: 3, text: 'What is Lorem Ipsum?'),
-            Padding(padding: const EdgeInsets.all(10)),
-            Table.fromTextArray(context: context, data: const <List<String>>[
-              <String>['Year', 'Ipsum', 'Lorem'],
-              <String>['2000', 'Ipsum 1.0', 'Lorem 1'],
-              <String>['2001', 'Ipsum 1.1', 'Lorem 2'],
-              <String>['2002', 'Ipsum 1.2', 'Lorem 3'],
-              <String>['2003', 'Ipsum 1.3', 'Lorem 4'],
-              <String>['2004', 'Ipsum 1.4', 'Lorem 5'],
-              <String>['2004', 'Ipsum 1.5', 'Lorem 6'],
-              <String>['2006', 'Ipsum 1.6', 'Lorem 7'],
-              <String>['2007', 'Ipsum 1.7', 'Lorem 8'],
-              <String>['2008', 'Ipsum 1.7', 'Lorem 9'],
-            ]),
+            ...reports.map((report) {
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Paragraph(
+                        text:
+                            'REF: ${report.supplyName} - ${report.supplyReference}',
+                        style: TextStyle(fontSize: 20)),
+                    Paragraph(
+                        text: 'Contact Name: ${report.contactName}',
+                        style: TextStyle(fontSize: 20)),
+                    Paragraph(
+                        text: 'Client: ${report.client}',
+                        style: TextStyle(fontSize: 20)),
+                    Paragraph(
+                        text: 'Site: ${report.site}',
+                        style: TextStyle(fontSize: 20)),
+                    Paragraph(
+                        text: 'Building: ${report.building}',
+                        style: TextStyle(fontSize: 20)),
+                    Paragraph(
+                        text:
+                            'This report was carried out on:  ${report.dateSurveyCarriedOut}',
+                        style: TextStyle(fontSize: 20)),
+                    Paragraph(
+                        text:
+                            'Company survey carried out on behalf of:  ${report.carriedoutonbehalfof}',
+                        style: TextStyle(fontSize: 20)),
+                    Table.fromTextArray(context: context, data: <List<String>>[
+                      <String>['Meter', ''],
+                      <String>[
+                        'Meter Read',
+                        report.meterRead,
+                      ],
+                      <String>[
+                        'Parent Meter (Supplied from)',
+                        report.parentMeter,
+                      ],
+                      <String>[
+                        'Manufacturer',
+                        report.manufacturer,
+                      ],
+                      <String>[
+                        'Model',
+                        report.meterModel,
+                      ],
+                      <String>[
+                        'Meter type',
+                        '',
+                      ],
+                      <String>[
+                        'Serial Number',
+                        '',
+                      ],
+                      <String>[
+                        'MID',
+                        '',
+                      ],
+                      <String>[
+                        'AMR (Automatic meter reading)',
+                        '',
+                      ],
+                      <String>[
+                        'On Network',
+                        '',
+                      ],
+                      <String>[
+                        'On BMS',
+                        '',
+                      ],
+                      <String>[
+                        'Slave ID',
+                        '',
+                      ],
+                      <String>[
+                        'Meter Location',
+                        '',
+                      ],
+                      <String>[
+                        'Floor Level',
+                        '',
+                      ],
+                      <String>[
+                        'Note',
+                        '',
+                      ],
+                      <String>[
+                        'Demise served',
+                        '',
+                      ],
+                    ]),
+                    SizedBox(height: 200),
+                  ]);
+            }),
           ]));
   return pdf;
 }

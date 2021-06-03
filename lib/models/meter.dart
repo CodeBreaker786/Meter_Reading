@@ -9,6 +9,7 @@ class Meter {
   String floor;
   String demiseServed;
   String location;
+   
   Meter(
       {this.supplyNumber,
       this.supplyName,
@@ -19,5 +20,6 @@ class Meter {
       this.manufacturer,
       this.floor,
       this.demiseServed,
-      this.location});
+      this.location,
+      });
 }

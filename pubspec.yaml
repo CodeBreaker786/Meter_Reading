@@ -22,6 +22,7 @@ dependencies:
 
   flutter_full_pdf_viewer: ^1.0.6
   path_provider: ^1.5.1
+  another_flushbar: ^1.10.22
   flutter_speed_dial:
 
 dev_dependencies:

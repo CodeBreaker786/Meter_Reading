@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
- 
+import 'package:metr_reading/widgets/flush_bar.dart';
 
 class LoginPageWidget extends StatefulWidget {
   @override
@@ -16,6 +16,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
   @override
   void deactivate() {
     isLoading = false;
+
     super.deactivate();
   }
 
@@ -104,7 +105,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 ),
                 border: OutlineInputBorder(
                   // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                   borderSide: BorderSide.none,
                   //borderSide: const BorderSide(),
                 ),
@@ -142,7 +143,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 ),
                 border: OutlineInputBorder(
                   // width: 0.0 produces a thin "hairline" border
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  borderRadius: BorderRadius.all(Radius.circular(12)),
                   borderSide: BorderSide.none,
                   //borderSide: const BorderSide(),
                 ),
@@ -164,36 +165,52 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             height: 50.0,
             child: GestureDetector(
               onTap: () async {
-             UserCredential user=  await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text.trim());
-                
+                setState(() {
+                  isLoading = true;
+                });
+                try {
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim());
+                } on FirebaseAuthException catch (error) {
+                  buildFlushBar(
+                    buildContext: context,
+                    title: error.message,
+                    isError: true,
+                    subtitle: "please enter right credentials",
+                  );
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.lightGreen[600],
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(
-                      child: Text(
-                        "Log in",
-                        style: TextStyle(
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: Colors.lightGreen[600],
-                          fontFamily: 'Montserrat',
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
                         ),
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
-                    )
-                  ],
-                ),
-              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              "Log in",
+                              style: TextStyle(
+                                color: Colors.lightGreen[600],
+                                fontFamily: 'Montserrat',
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
             ),
           ),
         ),
