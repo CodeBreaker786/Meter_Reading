@@ -4,7 +4,11 @@ class GlobalTextField extends StatelessWidget {
   final hintText;
   final controller;
   Function validator;
-  GlobalTextField({Key key, @required this.hintText, @required this.controller,this.validator})
+  GlobalTextField(
+      {Key key,
+      @required this.hintText,
+      @required this.controller,
+      this.validator})
       : super(key: key);
 
   @override
@@ -19,13 +23,22 @@ class GlobalTextField extends StatelessWidget {
         cursorRadius: Radius.circular(5),
         style: TextStyle(color: Colors.white, fontSize: 18),
         decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderSide: BorderSide(color: Colors.black, width: 2)),
             border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.green),
               borderRadius: BorderRadius.all(Radius.circular(12)),
-              borderSide: BorderSide.none,
+            ),
+            labelText: hintText,
+            labelStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.black54,
             ),
             hintStyle: TextStyle(
               fontSize: 18,
-              color: Colors.white,
+              color: Colors.grey[350],
             ),
             filled: true,
             fillColor: Colors.lightGreen[600],

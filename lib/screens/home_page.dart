@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:metr_reading/models/report.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
+import 'package:metr_reading/screens/report_viwer.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(
-              Feather.settings,
+              Icons.logout,
               size: 28,
             ),
             onPressed: () async {
@@ -63,10 +64,29 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      leading: CircleAvatar(
-                        child: Text(reports[index].client[0].toUpperCase()),
+                      title: Text("Contact Name : " +
+                          reports[index].contactName.toString()),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Client : " + reports[index].client.toString()),
+                          Text("Site : " + reports[index].site.toString()),
+                          Text("Building : " +
+                              reports[index].building.toString()),
+                          Text("Carried Out By : " +
+                              reports[index].carriedoutonbehalfof.toString()),
+                          Text("Total Meters : " +
+                              reports[index].meters.length.toString()),
+                        ],
                       ),
-                      title: Text(reports[index].client.toString()),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ReportViwer(
+                                      report: reports[index],
+                                    )));
+                      },
                     ),
                   );
                 },

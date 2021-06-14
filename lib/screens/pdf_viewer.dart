@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_full_pdf_viewer/full_pdf_viewer_scaffold.dart';
 
@@ -8,16 +7,25 @@ class PdfViewerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PDFViewerScaffold(
-        appBar: AppBar(
-        title: Text(
-          'Meter Report',
-          style: TextStyle(
-            fontSize: 25,
+    return Stack(children: [
+      Scaffold(
+        body: PDFViewerScaffold(
+          appBar: AppBar(
+            title: Text(
+              'Meter Report',
+              style: TextStyle(
+                fontSize: 25,
+              ),
+            ),
           ),
+          path: path,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          foregroundColor: Colors.green,
+          child: Icon(Icons.share),
         ),
       ),
-      path: path,
-    );
+    ]);
   }
 }

@@ -27,6 +27,7 @@ class _AddMeterPageState extends State<AddMeterPage>
   TextEditingController _editingControllerMeterRead = TextEditingController();
   TextEditingController _editingControllerParentMeter = TextEditingController();
   TextEditingController _editingControllerMeterModel = TextEditingController();
+  TextEditingController _editingControllerMeterType = TextEditingController();
   TextEditingController _editingControllerManufacturer =
       TextEditingController();
   TextEditingController _editingControllerFloor = TextEditingController();
@@ -34,11 +35,13 @@ class _AddMeterPageState extends State<AddMeterPage>
       TextEditingController();
   TextEditingController _editingControllerLocation = TextEditingController();
   TextEditingController _editingControllerPluse = TextEditingController();
-  List<bool> measureToggle = List.generate(4, (index) => false);
-  List<bool> meterTypeToggle = List.generate(3, (index) => false);
-  List<bool> protocolToggles = List.generate(4, (index) => false);
+  TextEditingController _editingControllerMeter = TextEditingController();
+  TextEditingController _editingControllerCommonProtocol =
+      TextEditingController();
+
   bool onNetwork = false;
   bool onBuss = false;
+  bool pluseLeadRequired = false;
   @override
   void initState() {
     tabController1 = TabController(vsync: this, length: 2);
@@ -51,6 +54,7 @@ class _AddMeterPageState extends State<AddMeterPage>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.grey[200],
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.green,
@@ -66,17 +70,24 @@ class _AddMeterPageState extends State<AddMeterPage>
                 if (_formKey.currentState.validate()) {
                   Meter meter = Meter(
                       supplyNumber: _editingControllerSupplyNumber.text,
+                      meterRead: _editingControllerMeterRead.text,
                       supplyName: _editingControllerSupplyName.text,
                       supplyReference: _editingControllerMeterRead.text,
                       parentMeter: _editingControllerParentMeter.text,
+                      meterType: _editingControllerMeterType.text,
                       meterModel: _editingControllerMeterModel.text,
                       manufacturer: _editingControllerManufacturer.text,
                       floor: _editingControllerFloor.text,
                       demiseServed: _editingControllerDemiseServed.text,
+                      meter: _editingControllerMeter.text,
                       location: _editingControllerLocation.text);
                   Navigator.pop(context, meter);
                 } else {
-                  buildFlushBar(buildContext: context);
+                  buildFlushBar(
+                    buildContext: context,
+                    title: "Incomplete Information",
+                    subtitle: "Please enter the data which is required",
+                  );
                 }
               },
               child: Padding(
@@ -93,8 +104,20 @@ class _AddMeterPageState extends State<AddMeterPage>
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                GlobalDropdwon(
+                    hintText: 'Meter',
+                    textEditingController: _editingControllerMeter,
+                    onChanged: (value) {
+                      setState(() {
+                        _editingControllerMeter.text = value;
+                      });
+                    },
+                    getItemList: (searchText) async {
+                      await Future.delayed(Duration(seconds: 0), () {});
+                      return ['Thermal', 'Electric', 'Gas', 'Water'];
+                    }),
                 GlobalTextField(
                   hintText: 'Supply Reference:',
                   controller: _editingControllerSupplyReference,
@@ -121,10 +144,38 @@ class _AddMeterPageState extends State<AddMeterPage>
                   hintText: 'Supply Number:',
                   controller: _editingControllerSupplyNumber,
                 ),
-                GlobalTextField(
-                  hintText: 'Meter Read:',
-                  controller: _editingControllerMeterRead,
-                ),
+                GlobalDropdwon(
+                    hintText: 'Meter Type',
+                    textEditingController: _editingControllerMeterType,
+                    onChanged: (value) {
+                      setState(() {
+                        _editingControllerMeterType.text = value;
+                      });
+                    },
+                    getItemList: (searchText) async {
+                      await Future.delayed(Duration(seconds: 0), () {});
+                      return [
+                        'Main Fiscal',
+                        'Check Meter',
+                        'Sub Meter',
+                      ];
+                    }),
+                GlobalDropdwon(
+                    hintText: 'Meter Read',
+                    textEditingController: _editingControllerMeterRead,
+                    onChanged: (value) {
+                      setState(() {
+                        _editingControllerMeterRead.text = value;
+                      });
+                    },
+                    getItemList: (searchText) async {
+                      await Future.delayed(Duration(seconds: 0), () {});
+                      return [
+                        'kWh',
+                        'Litres',
+                        'M3',
+                      ];
+                    }),
                 GlobalDropdwon(
                     hintText: 'Parent Meter',
                     textEditingController: _editingControllerParentMeter,
@@ -143,11 +194,26 @@ class _AddMeterPageState extends State<AddMeterPage>
                       ];
                     }),
                 GlobalDropdwon(
+                  hintText: 'Manufacturer',
+                  textEditingController: _editingControllerManufacturer,
+                  onChanged: (value) {},
+                  getItemList: (searchText) async {
+                    return [searchText.toString()];
+                  },
+                  validator: (String text) {
+                    if (text == null || text.isEmpty) {
+                      return "Please Enter Manufacturer";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                GlobalDropdwon(
                   hintText: 'Meter Model',
                   textEditingController: _editingControllerMeterModel,
                   onChanged: (value) {},
                   getItemList: (searchText) async {
-                    await Future.delayed(Duration(seconds: 500), () {});
+                    await Future.delayed(Duration(seconds: 1), () {});
                     return [
                       'Parent Meter',
                       'Parent Meter',
@@ -164,26 +230,20 @@ class _AddMeterPageState extends State<AddMeterPage>
                   },
                 ),
                 GlobalDropdwon(
-                  hintText: 'Manufacturer',
-                  textEditingController: _editingControllerManufacturer,
-                  onChanged: (value) {},
-                  getItemList: (searchText) async {
-                    return [searchText.toString()];
-                  },
-                  validator: (String text) {
-                    if (text == null || text.isEmpty) {
-                      return "Please Enter Manufacturer";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-                GlobalDropdwon(
                   hintText: 'Floor',
                   textEditingController: _editingControllerFloor,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    _editingControllerFloor.text = value;
+                  },
                   getItemList: (searchText) async {
-                    return [searchText];
+                    return [
+                      "Ground floor",
+                      "1st floor",
+                      "3rd floor",
+                      "4th floor",
+                      "5th floor",
+                      "6th floor"
+                    ];
                   },
                   validator: (String text) {
                     if (text == null || text.isEmpty) {
@@ -198,7 +258,7 @@ class _AddMeterPageState extends State<AddMeterPage>
                   textEditingController: _editingControllerDemiseServed,
                   onChanged: (value) {},
                   getItemList: (searchText) async {
-                    return [searchText];
+                    return [searchText.toString()];
                   },
                 ),
                 GlobalTextField(
@@ -210,111 +270,6 @@ class _AddMeterPageState extends State<AddMeterPage>
                     } else {
                       return null;
                     }
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: ToggleButtons(
-                    color: Colors.grey,
-                    borderColor: Colors.green,
-                    selectedColor: Colors.white,
-                    borderWidth: 3,
-                    borderRadius: BorderRadius.circular(12),
-                    selectedBorderColor: Colors.green,
-                    fillColor: Colors.green.withOpacity(.3),
-                    hoverColor: Colors.green,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 20),
-                        child: Text(
-                          'kWh',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 20),
-                        child: Text(
-                          'Litres',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 20),
-                        child: Text(
-                          'M3',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 20),
-                        child: Text(
-                          'Others',
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                    isSelected: measureToggle,
-                    onPressed: (index) {
-                      measureToggle = List.generate(
-                          4, (value) => value == index ? true : false);
-                      setState(() {});
-                    },
-                  ),
-                ),
-                ToggleButtons(
-                  color: Colors.grey,
-                  borderColor: Colors.green,
-                  selectedColor: Colors.white,
-                  borderWidth: 3,
-                  borderRadius: BorderRadius.circular(12),
-                  selectedBorderColor: Colors.green,
-                  fillColor: Colors.green.withOpacity(.3),
-                  hoverColor: Colors.green,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 12),
-                      child: Text(
-                        'Main\nFiscal',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 12),
-                      child: Text(
-                        'Check\nMeter',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 12),
-                      child: Text(
-                        'Sub\nMeter',
-                        style: TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                  isSelected: meterTypeToggle,
-                  onPressed: (index) {
-                    meterTypeToggle = List.generate(
-                        3, (value) => value == index ? true : false);
-                    setState(() {});
                   },
                 ),
                 Padding(
@@ -405,87 +360,21 @@ class _AddMeterPageState extends State<AddMeterPage>
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Comms Protocol Please Select One',
-                                style: TextStyle(
-                                  color: Colors.lightGreen[600],
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8),
-                                child: ToggleButtons(
-                                  color: Colors.grey,
-                                  borderColor: Colors.green,
-                                  selectedColor: Colors.white,
-                                  borderWidth: 3,
-                                  borderRadius: BorderRadius.circular(8),
-                                  selectedBorderColor: Colors.green,
-                                  fillColor: Colors.green.withOpacity(.3),
-                                  hoverColor: Colors.green,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 8),
-                                      child: Text(
-                                        "Modbus",
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 8),
-                                      child: Text(
-                                        "Pulse",
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 8),
-                                      child: Text(
-                                        "M-Bus",
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 8, horizontal: 8),
-                                      child: Text(
-                                        "Other",
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ],
-                                  isSelected: protocolToggles,
-                                  onPressed: (index) {
-                                    protocolToggles = List.generate(
-                                        4,
-                                        (value) =>
-                                            value == index ? true : false);
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                            ),
+                            GlobalDropdwon(
+                                hintText: 'Comms Protocol',
+                                textEditingController:
+                                    _editingControllerCommonProtocol,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _editingControllerCommonProtocol.text =
+                                        value;
+                                  });
+                                },
+                                getItemList: (searchText) async {
+                                  await Future.delayed(
+                                      Duration(seconds: 0), () {});
+                                  return ['Modbus', 'Pulse', 'M-Bus', 'Water'];
+                                }),
                             GlobalTextField(
                               hintText: 'Pulse',
                               controller: _editingControllerPluse,
@@ -509,10 +398,10 @@ class _AddMeterPageState extends State<AddMeterPage>
                                     activeColor: Colors.green,
                                     onChanged: (value) async {
                                       setState(() {
-                                        onBuss = value;
+                                        pluseLeadRequired = value;
                                       });
                                     },
-                                    value: onBuss,
+                                    value: pluseLeadRequired,
                                   )
                                 ],
                               ),

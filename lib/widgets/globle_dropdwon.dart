@@ -29,18 +29,26 @@ class GlobalDropdwon extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 18),
               decoration: InputDecoration(
                 hintText: hintText,
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    borderSide: BorderSide(color: Colors.black, width: 2)),
                 hintStyle: TextStyle(color: Colors.white60, fontSize: 18),
                 fillColor: Colors.lightGreen[600],
                 filled: true,
+                labelText: hintText,
+                labelStyle: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide.none,
                 ),
               )),
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
               color: Colors.lightGreen[200],
               borderRadius: BorderRadius.all(Radius.circular(12))),
-              validator: validator,
+          validator: validator,
           itemBuilder: (context, suggestion) {
             return ListTile(
               title: Text(suggestion),

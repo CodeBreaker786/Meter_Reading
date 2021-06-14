@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import 'package:metr_reading/models/meter.dart';
+
 class Report {
-  String id;
   String client;
   String site;
   String building;
@@ -11,49 +15,64 @@ class Report {
   String email;
   String phoneNo;
   String survey;
-  String dateSurveyCarriedOut;
+  DateTime dateSurveyCarriedOut;
   String accompainedBy;
   String siteEngineer;
   String siteEngineerEmail;
-  String supplyReference;
-  String supplyName;
-  String supplyNumber;
-  String meterRead;
-  String parentMeter;
-  String meterModel;
-  String manufacturer;
-  String floor;
-  String demiseServed;
-  String location;
-  Report(
-      {this.id,
-      this.client,
-      this.site,
-      this.building,
-      this.customerReferenceNo,
-      this.carriedoutonbehalfof,
-      this.contactName,
-      this.email,
-      this.phoneNo,
-      this.survey,
-      this.dateSurveyCarriedOut,
-      this.accompainedBy,
-      this.siteEngineer,
-      this.siteEngineerEmail,
-      this.supplyReference,
-      this.supplyName,
-      this.supplyNumber,
-      this.meterRead,
-      this.parentMeter,
-      this.meterModel,
-      this.manufacturer,
-      this.floor,
-      this.demiseServed,
-      this.location});
+  List<Meter> meters;
+  Report({
+    @required this.client,
+    @required this.site,
+    @required this.building,
+    @required this.customerReferenceNo,
+    @required this.carriedoutonbehalfof,
+    @required this.contactName,
+    @required this.email,
+    @required this.phoneNo,
+    @required this.survey,
+    @required this.dateSurveyCarriedOut,
+    @required this.accompainedBy,
+    @required this.siteEngineer,
+    @required this.siteEngineerEmail,
+    @required this.meters,
+  });
+
+  Report copyWith({
+    String client,
+    String site,
+    String building,
+    String customerReferenceNo,
+    String carriedoutonbehalfof,
+    String contactName,
+    String email,
+    String phoneNo,
+    String survey,
+    DateTime dateSurveyCarriedOut,
+    String accompainedBy,
+    String siteEngineer,
+    String siteEngineerEmail,
+    List<Meter> meters,
+  }) {
+    return Report(
+      client: client ?? this.client,
+      site: site ?? this.site,
+      building: building ?? this.building,
+      customerReferenceNo: customerReferenceNo ?? this.customerReferenceNo,
+      carriedoutonbehalfof: carriedoutonbehalfof ?? this.carriedoutonbehalfof,
+      contactName: contactName ?? this.contactName,
+      email: email ?? this.email,
+      phoneNo: phoneNo ?? this.phoneNo,
+      survey: survey ?? this.survey,
+      dateSurveyCarriedOut: dateSurveyCarriedOut ?? this.dateSurveyCarriedOut,
+      accompainedBy: accompainedBy ?? this.accompainedBy,
+      siteEngineer: siteEngineer ?? this.siteEngineer,
+      siteEngineerEmail: siteEngineerEmail ?? this.siteEngineerEmail,
+      meters: meters ?? this.meters,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'client': client,
       'site': site,
       'building': building,
@@ -67,22 +86,12 @@ class Report {
       'accompainedBy': accompainedBy,
       'siteEngineer': siteEngineer,
       'siteEngineerEmail': siteEngineerEmail,
-      'supplyReference': supplyReference,
-      'supplyName': supplyName,
-      'supplyNumber': supplyNumber,
-      'meterRead': meterRead,
-      'parentMeter': parentMeter,
-      'meterModel': meterModel,
-      'manufacturer': manufacturer,
-      'floor': floor,
-      'demiseServed': demiseServed,
-      'location': location,
+      'meters': meters?.map((x) => x.toMap())?.toList(),
     };
   }
 
   factory Report.fromMap(Map<String, dynamic> map) {
     return Report(
-      id: map['id'],
       client: map['client'],
       site: map['site'],
       building: map['building'],
@@ -92,30 +101,21 @@ class Report {
       email: map['email'],
       phoneNo: map['phoneNo'],
       survey: map['survey'],
-      dateSurveyCarriedOut: map['dateSurveyCarriedOut'],
+      dateSurveyCarriedOut: map['dateSurveyCarriedOut'].toDate(),
       accompainedBy: map['accompainedBy'],
       siteEngineer: map['siteEngineer'],
       siteEngineerEmail: map['siteEngineerEmail'],
-      supplyReference: map['supplyReference'],
-      supplyName: map['supplyName'],
-      supplyNumber: map['supplyNumber'],
-      meterRead: map['meterRead'],
-      parentMeter: map['parentMeter'],
-      meterModel: map['meterModel'],
-      manufacturer: map['manufacturer'],
-      floor: map['floor'],
-      demiseServed: map['demiseServed'],
-      location: map['location'],
+      meters: List<Meter>.from(map['meters']?.map((x) => Meter.fromMap(x))),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  // factory Report.fromJson(String source) => Report.fromMap(json.decode(source));
+  factory Report.fromJson(String source) => Report.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Report(id: $id, client: $client, site: $site, building: $building, customerReferenceNo: $customerReferenceNo, carriedoutonbehalfof: $carriedoutonbehalfof, contactName: $contactName, email: $email, phoneNo: $phoneNo, survey: $survey, dateSurveyCarriedOut: $dateSurveyCarriedOut, accompainedBy: $accompainedBy, siteEngineer: $siteEngineer, siteEngineerEmail: $siteEngineerEmail, supplyReference: $supplyReference, supplyName: $supplyName, supplyNumber: $supplyNumber, meterRead: $meterRead, parentMeter: $parentMeter, meterModel: $meterModel, manufacturer: $manufacturer, floor: $floor, demiseServed: $demiseServed, location: $location)';
+    return 'Report(client: $client, site: $site, building: $building, customerReferenceNo: $customerReferenceNo, carriedoutonbehalfof: $carriedoutonbehalfof, contactName: $contactName, email: $email, phoneNo: $phoneNo, survey: $survey, dateSurveyCarriedOut: $dateSurveyCarriedOut, accompainedBy: $accompainedBy, siteEngineer: $siteEngineer, siteEngineerEmail: $siteEngineerEmail, meters: $meters)';
   }
 
   @override
@@ -123,7 +123,6 @@ class Report {
     if (identical(this, other)) return true;
 
     return other is Report &&
-        other.id == id &&
         other.client == client &&
         other.site == site &&
         other.building == building &&
@@ -137,22 +136,12 @@ class Report {
         other.accompainedBy == accompainedBy &&
         other.siteEngineer == siteEngineer &&
         other.siteEngineerEmail == siteEngineerEmail &&
-        other.supplyReference == supplyReference &&
-        other.supplyName == supplyName &&
-        other.supplyNumber == supplyNumber &&
-        other.meterRead == meterRead &&
-        other.parentMeter == parentMeter &&
-        other.meterModel == meterModel &&
-        other.manufacturer == manufacturer &&
-        other.floor == floor &&
-        other.demiseServed == demiseServed &&
-        other.location == location;
+        listEquals(other.meters, meters);
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^
-        client.hashCode ^
+    return client.hashCode ^
         site.hashCode ^
         building.hashCode ^
         customerReferenceNo.hashCode ^
@@ -165,15 +154,6 @@ class Report {
         accompainedBy.hashCode ^
         siteEngineer.hashCode ^
         siteEngineerEmail.hashCode ^
-        supplyReference.hashCode ^
-        supplyName.hashCode ^
-        supplyNumber.hashCode ^
-        meterRead.hashCode ^
-        parentMeter.hashCode ^
-        meterModel.hashCode ^
-        manufacturer.hashCode ^
-        floor.hashCode ^
-        demiseServed.hashCode ^
-        location.hashCode;
+        meters.hashCode;
   }
 }

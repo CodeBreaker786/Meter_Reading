@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:metr_reading/models/report.dart';
-import 'package:metr_reading/models/report.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
-import 'package:pdf/widgets/document.dart';
+import 'package:share/share.dart';
 
-reportView({context, List<Report> reports}) async {
+reportView({context, Report report}) async {
   final Document pdf = Document();
 
   pdf.addPage(MultiPage(
@@ -13,7 +16,7 @@ reportView({context, List<Report> reports}) async {
       crossAxisAlignment: CrossAxisAlignment.start,
       header: (Context context) {
         if (context.pageNumber == 1) {
-          return null;
+          return SizedBox();
         }
         return Container(
             alignment: Alignment.centerRight,
@@ -42,13 +45,13 @@ reportView({context, List<Report> reports}) async {
                       Text('Meter Survey report', textScaleFactor: 2),
                       PdfLogo()
                     ])),
-            ...reports.map((report) {
+            ...report.meters.map((meter) {
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Paragraph(
                         text:
-                            'REF: ${report.supplyName} - ${report.supplyReference}',
+                            'REF: ${meter.supplyName} - ${meter.supplyReference}',
                         style: TextStyle(fontSize: 20)),
                     Paragraph(
                         text: 'Contact Name: ${report.contactName}',
@@ -74,19 +77,19 @@ reportView({context, List<Report> reports}) async {
                       <String>['Meter', ''],
                       <String>[
                         'Meter Read',
-                        report.meterRead,
+                        meter.meterRead,
                       ],
                       <String>[
                         'Parent Meter (Supplied from)',
-                        report.parentMeter,
+                        meter.parentMeter,
                       ],
                       <String>[
                         'Manufacturer',
-                        report.manufacturer,
+                        meter.manufacturer,
                       ],
                       <String>[
                         'Model',
-                        report.meterModel,
+                        meter.meterModel,
                       ],
                       <String>[
                         'Meter type',
@@ -137,5 +140,10 @@ reportView({context, List<Report> reports}) async {
                   ]);
             }),
           ]));
-  return pdf;
+
+  final String dir = (await getApplicationDocumentsDirectory()).path;
+  final String path = '$dir/report.pdf';
+  final File file = File(path);
+  await file.writeAsBytes(await pdf.save());
+  Share.shareFiles([file.path], subject: 'report.pdf');
 }
