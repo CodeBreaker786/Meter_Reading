@@ -9,7 +9,7 @@ import 'package:metr_reading/services/pfd.dart';
 class ReportViwer extends StatelessWidget {
   Report report;
   ReportViwer({Key key, this.report}) : super(key: key);
-  final df = DateFormat('dd-MM-yyyy hh:mm a');
+  final df = DateFormat('dd-MM-yyyy');
   @override
   Widget build(BuildContext context) {
     return Scaffold(

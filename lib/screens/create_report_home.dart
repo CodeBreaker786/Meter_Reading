@@ -1,4 +1,3 @@
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -22,10 +21,8 @@ class CreateReportPage extends StatefulWidget {
 
 class _CreateReportPageState extends State<CreateReportPage> {
   final _formKey = GlobalKey<FormState>();
-  final GlobalKey<ExpansionTileCardState> card1 = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> card2 = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> card3 = new GlobalKey();
-  final GlobalKey<ExpansionTileCardState> card4 = new GlobalKey();
+  List<bool> cardList = List.generate(4, (index) => index == 0 ? true : false);
+
   TextEditingController _editingControllerClient = TextEditingController();
   TextEditingController _editingControllerSite = TextEditingController();
   TextEditingController _editingControllerBuilding = TextEditingController();
@@ -52,7 +49,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
   final ScrollController _scrollController = ScrollController();
 
   List<bool> meterToggle = List.generate(3, (index) => false);
-  final df = DateFormat('dd-MM-yyyy hh:mm a');
+  final df = DateFormat('dd-MM-yyyy');
   DateTime dateTime;
 
   @override
@@ -80,78 +77,89 @@ class _CreateReportPageState extends State<CreateReportPage> {
               key: _formKey,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: ExpansionTileCard(
-                      key: card1,
-                      animateTrailing: true,
-                      //   finalPadding: EdgeInsets.symmetric(vertical: 12),
-                      expandedTextColor: Colors.green,
-                      title: Text(
-                        'Cient Details',
-                        style: buildTileTitleStyle(),
-                      ),
-                      children: [
-                        GlobalTextField(
-                          hintText: 'Client',
-                          controller: _editingControllerClient,
-                          validator: (String text) {
-                            if (text == null || text.isEmpty) {
-                              return "Please Enter Client";
-                            } else {
-                              return null;
-                            }
-                          },
+                  ExpansionPanelList(
+                    animationDuration: Duration(milliseconds: 1000),
+                    elevation: 1,
+                    expansionCallback: (index, isExpanded) {
+                      for (int i = 0; i < cardList.length; i++) {
+                        if (i == index) {
+                          cardList[index] = !isExpanded;
+                        } else {
+                          cardList[i] = false;
+                        }
+                      }
+                      setState(() {});
+                    },
+                    children: [
+                      ExpansionPanel(
+                          headerBuilder: (context, isExpanded) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 14),
+                                child: Text(
+                                  'Cient Details',
+                                  style: buildTileTitleStyle(),
+                                ),
+                              ),
+                          isExpanded: cardList[0],
+                          body: Column(
+                            children: [
+                              GlobalTextField(
+                                hintText: 'Client',
+                                controller: _editingControllerClient,
+                                validator: (String text) {
+                                  if (text == null || text.isEmpty) {
+                                    return "Please Enter Client";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              GlobalTextField(
+                                hintText: 'Site',
+                                controller: _editingControllerSite,
+                                validator: (String text) {
+                                  if (text == null || text.isEmpty) {
+                                    return "Please Enter Site";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              GlobalTextField(
+                                hintText: 'Building',
+                                controller: _editingControllerBuilding,
+                              ),
+                              GlobalTextField(
+                                hintText: 'Customer Reference No:',
+                                controller: _editingControllerCustomer,
+                                validator: (String text) {
+                                  if (text == null || text.isEmpty) {
+                                    return "Please Enter Customer Reference No";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                              ),
+                              GlobalTextField(
+                                hintText: 'Carried out on behalf of',
+                                controller: _editingControllerCarried,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          )),
+                      ExpansionPanel(
+                        headerBuilder: (context, isExpanded) => Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 14),
+                          child: Text(
+                            'Report Carried Out By',
+                            style: buildTileTitleStyle(),
+                          ),
                         ),
-                        GlobalTextField(
-                          hintText: 'Site',
-                          controller: _editingControllerSite,
-                          validator: (String text) {
-                            if (text == null || text.isEmpty) {
-                              return "Please Enter Site";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                        GlobalTextField(
-                          hintText: 'Building',
-                          controller: _editingControllerBuilding,
-                        ),
-                        GlobalTextField(
-                          hintText: 'Customer Reference No:',
-                          controller: _editingControllerCustomer,
-                          validator: (String text) {
-                            if (text == null || text.isEmpty) {
-                              return "Please Enter Customer Reference No";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                        GlobalTextField(
-                          hintText: 'Carried out on behalf of',
-                          controller: _editingControllerCarried,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: ExpansionTileCard(
-                      key: card2,
-                      animateTrailing: true,
-                      finalPadding: EdgeInsets.symmetric(vertical: 12),
-                      expandedTextColor: Colors.green,
-                      title: Text(
-                        'Report Carried Out By',
-                        style: buildTileTitleStyle(),
-                      ),
-                      children: [
-                        Column(
+                        isExpanded: cardList[1],
+                        body: Column(
                           children: [
                             GlobalTextField(
                               hintText: 'Contact Name',
@@ -269,290 +277,319 @@ class _CreateReportPageState extends State<CreateReportPage> {
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: ExpansionTileCard(
-                      key: card3,
-                      animateTrailing: true,
-                      finalPadding: EdgeInsets.symmetric(vertical: 12),
-                      expandedTextColor: Colors.green,
-                      title: Text(
-                        'Test Meter Used',
-                        style: buildTileTitleStyle(),
                       ),
-                      children: [
-                        GlobalDropdwon(
-                            hintText: 'Meter',
-                            textEditingController: _editingControllerMeter,
-                            onChanged: (value) {
-                              setState(() {
-                                _editingControllerMeter.text = value;
-                              });
-                            },
-                            getItemList: (searchText) async {
-                              await Future.delayed(Duration(seconds: 0), () {});
-                              return ['Thermal', 'Electric', 'Gas', 'Water'];
-                            }),
-                        meterToggle[2]
-                            ? GlobalTextField(
-                                hintText: 'Other:',
-                                controller: _editingControllerMeter,
-                              )
-                            : SizedBox(),
-                        GlobalTextField(
-                          hintText: 'Model:',
-                          controller: _editingControllerModel,
-                        ),
-                        GlobalTextField(
-                          hintText: 'Make:',
-                          controller: _editingControllerMake,
-                        ),
-                        GlobalTextField(
-                          hintText: 'Serial No:',
-                          controller: _editingControllerSerialNo,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-
-                        //selectioncontainer
-
-                        SizedBox(
-                          height: 20,
-                        ),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                                icon: Icon(
-                                  MaterialIcons.attach_file,
-                                  size: 40,
-                                  color: Colors.lightGreen[600],
-                                ),
-                                onPressed: null),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Text(
-                                'Attach Calibration\nCertificate',
-                                style: TextStyle(
-                                  color: Colors.lightGreen[600],
-                                  fontSize: 18,
+                      ExpansionPanel(
+                          headerBuilder: (context, isExpanded) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 14),
+                                child: Text(
+                                  'Test Meter Used',
+                                  style: buildTileTitleStyle(),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: ExpansionTileCard(
-                      key: card4,
-                      animateTrailing: true,
-                      expandedTextColor: Colors.green,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total Meters',
-                            style: buildTileTitleStyle(),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              Meter meter = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AddMeterPage()),
-                              );
-
-                              if (meter != null) {
-                                setState(() {
-                                  meters.add(meter);
-                                });
-                                card4.currentState?.expand();
-                              }
-                            },
-                            child: Icon(
-                              Icons.add_circle_outline_outlined,
-                              color: Colors.green,
-                              size: 30,
-                            ),
-                          ),
-                        ],
-                      ),
-                      children: [
-                        ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          controller: _scrollController,
-                          scrollDirection: Axis.vertical,
-                          itemCount: meters.length,
-                          itemBuilder: (context, index) {
-                            return Slidable(
-                              actionPane: SlidableDrawerActionPane(),
-                              //  actionExtentRatio: 0.25,
-                              child: Container(
-                                color: Colors.green.withOpacity(.4),
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: AssetImage(
-                                      'assets/meter.png',
-                                    ),
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  title: Text('Tile no $index'),
-                                  subtitle: Text('SlidableDrawerDelegate'),
-                                ),
-                              ),
-                              actions: <Widget>[
-                                IconSlideAction(
-                                  caption: 'Archive',
-                                  color: Colors.blue,
-                                  icon: Icons.archive,
-                                  onTap: () => null,
-                                ),
-                                IconSlideAction(
-                                  caption: 'Share',
-                                  color: Colors.indigo,
-                                  icon: Icons.share,
-                                  onTap: () => null,
-                                ),
-                              ],
-                              secondaryActions: <Widget>[
-                                IconSlideAction(
-                                  caption: 'More',
-                                  color: Colors.black45,
-                                  icon: Icons.more_horiz,
-                                  onTap: () => null,
-                                ),
-                                IconSlideAction(
-                                  caption: 'Delete',
-                                  color: Colors.red,
-                                  icon: Icons.delete,
-                                  onTap: () {
-                                    meters.removeAt(index);
-                                    setState(() {});
+                          isExpanded: cardList[2],
+                          body: Column(
+                            children: [
+                              GlobalDropdwon(
+                                  hintText: 'Meter Type',
+                                  textEditingController:
+                                      _editingControllerMeter,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _editingControllerMeter.text = value;
+                                    });
                                   },
-                                ),
-                              ],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return Divider(
-                              height: 1,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  state is LoadingState
-                      ? LoadingIndicator()
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 50, right: 50),
-                          child: Container(
-                            height: 50.0,
-                            child: GestureDetector(
-                              onTap: () async {
-                                card1.currentState.expand();
-                                card2.currentState.expand();
-                                card3.currentState.expand();
-                                card4.currentState.expand();
-                                await Future.delayed(
-                                    Duration(milliseconds: 100));
-                                if (_formKey.currentState.validate()) {
-                                  report = Report(
-                                      site: _editingControllerSite.text,
-                                      client: _editingControllerClient.text,
-                                      building: _editingControllerBuilding.text,
-                                      customerReferenceNo:
-                                          _editingControllerCustomer.text,
-                                      carriedoutonbehalfof:
-                                          _editingControllerCarried.text,
-                                      contactName:
-                                          _editingControllerContactName.text,
-                                      email: _editingControllerEmail.text,
-                                      phoneNo: _editingControllerPhohneNo.text,
-                                      survey: _editingControllerSurvey.text,
-                                      dateSurveyCarriedOut:
-                                          dateTime,
-                                      accompainedBy:
-                                          _editingControllerAccompainedBy.text,
-                                      siteEngineer:
-                                          _editingControllerSiteEngineer.text,
-                                      siteEngineerEmail:
-                                          _editingControllerSiteEngineerEmail
-                                              .text,
-                                      meters: meters);
-                                  BlocProvider.of<GlobalBloc>(context)
-                                      .add(ShowLoadingIndicator());
-                                  bool isSuccess = await uploadReport(report);
-                                  if (isSuccess) {
-                                    Navigator.pop(context);
-                                  } else {
-                                    buildFlushBar(
-                                      buildContext: context,
-                                      title:
-                                          "Something Went Wrong Please Try again",
-                                      subtitle:
-                                          "Please make sure you entered the data ",
-                                    );
-                                  }
-                                } else {
-                                  buildFlushBar(
-                                    buildContext: context,
-                                    title: "Incomplete Information",
-                                    subtitle:
-                                        "Please enter the data which is required",
-                                  );
-                                }
+                                  getItemList: (searchText) async {
+                                    await Future.delayed(
+                                        Duration(seconds: 0), () {});
+                                    return [
+                                      'Thermal',
+                                      'Electric',
+                                      'Gas',
+                                      'Water'
+                                    ];
+                                  }),
+                                   GlobalDropdwon(
+                                  hintText: 'Meter Type',
+                                  textEditingController:
+                                      _editingControllerMeter,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _editingControllerMeter.text = value;
+                                    });
+                                  },
+                                  getItemList: (searchText) async {
+                                    await Future.delayed(
+                                        Duration(seconds: 0), () {});
+                                    return [
+                                      'Thermal',
+                                      'Electric',
+                                      'Gas',
+                                      'Water'
+                                    ];
+                                  }),
 
-                                BlocProvider.of<GlobalBloc>(context)
-                                    .add(SetToInitial());
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.lightGreen[600],
+                              GlobalTextField(
+                                hintText: 'Model:',
+                                controller: _editingControllerModel,
+                              ),
+                              GlobalTextField(
+                                hintText: 'Make:',
+                                controller: _editingControllerMake,
+                              ),
+
+                              GlobalTextField(
+                                hintText: 'Serial No:',
+                                controller: _editingControllerSerialNo,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              //selectioncontainer
+
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      icon: Icon(
+                                        MaterialIcons.attach_file,
+                                        size: 40,
+                                        color: Colors.lightGreen[600],
+                                      ),
+                                      onPressed: null),
+                                  SizedBox(
+                                    width: 5,
                                   ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20)),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Center(
-                                        child: Text(
-                                      "Save Report",
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: Text(
+                                      'Attach Calibration\nCertificate',
                                       style: TextStyle(
                                         color: Colors.lightGreen[600],
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w600,
-                                        letterSpacing: 1,
+                                        fontSize: 18,
                                       ),
-                                    ))
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 40,
+                              ),
+                            ],
+                          )),
+                      ExpansionPanel(
+                          headerBuilder: (context, isExpanded) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 14),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Total Meters',
+                                      style: buildTileTitleStyle(),
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        Meter meter = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddMeterPage()),
+                                        );
+
+                                        if (meter != null) {
+                                          setState(() {
+                                            meters.add(meter);
+                                          });
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.add_circle_outline_outlined,
+                                        color: Colors.green,
+                                        size: 30,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
+                          isExpanded: cardList[3],
+                          body: meters.length != 0
+                              ? ListView.separated(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  controller: _scrollController,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: meters.length,
+                                  itemBuilder: (context, index) {
+                                    return Slidable(
+                                      actionPane: SlidableDrawerActionPane(),
+                                      //  actionExtentRatio: 0.25,
+                                      child: Container(
+                                        color: Colors.green.withOpacity(.4),
+                                        child: ListTile(
+                                          leading: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            backgroundImage: AssetImage(
+                                              'assets/meter.png',
+                                            ),
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          title: Text('Tile no $index'),
+                                          subtitle:
+                                              Text('SlidableDrawerDelegate'),
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        IconSlideAction(
+                                          caption: 'Archive',
+                                          color: Colors.blue,
+                                          icon: Icons.archive,
+                                          onTap: () => null,
+                                        ),
+                                        IconSlideAction(
+                                          caption: 'Share',
+                                          color: Colors.indigo,
+                                          icon: Icons.share,
+                                          onTap: () => null,
+                                        ),
+                                      ],
+                                      secondaryActions: <Widget>[
+                                        IconSlideAction(
+                                          caption: 'More',
+                                          color: Colors.black45,
+                                          icon: Icons.more_horiz,
+                                          onTap: () => null,
+                                        ),
+                                        IconSlideAction(
+                                          caption: 'Delete',
+                                          color: Colors.red,
+                                          icon: Icons.delete,
+                                          onTap: () {
+                                            meters.removeAt(index);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Divider(
+                                      height: 1,
+                                    );
+                                  },
+                                )
+                              : Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 30),
+                                  child: Text(
+                                    "No Meter added yet ",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey),
+                                  ),
+                                ))
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: state is LoadingState
+                        ? LoadingIndicator()
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 50, right: 50),
+                            child: Container(
+                              height: 50.0,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await Future.delayed(
+                                      Duration(milliseconds: 100));
+                                  if (_formKey.currentState.validate()) {
+                                    report = Report(
+                                        site: _editingControllerSite.text,
+                                        client: _editingControllerClient.text,
+                                        building:
+                                            _editingControllerBuilding.text,
+                                        customerReferenceNo:
+                                            _editingControllerCustomer.text,
+                                        carriedoutonbehalfof:
+                                            _editingControllerCarried.text,
+                                        contactName:
+                                            _editingControllerContactName.text,
+                                        email: _editingControllerEmail.text,
+                                        phoneNo:
+                                            _editingControllerPhohneNo.text,
+                                        survey: _editingControllerSurvey.text,
+                                        dateSurveyCarriedOut: dateTime,
+                                        accompainedBy:
+                                            _editingControllerAccompainedBy
+                                                .text,
+                                        siteEngineer:
+                                            _editingControllerSiteEngineer.text,
+                                        siteEngineerEmail:
+                                            _editingControllerSiteEngineerEmail
+                                                .text,
+                                        meters: meters);
+                                    BlocProvider.of<GlobalBloc>(context)
+                                        .add(ShowLoadingIndicator());
+                                    bool isSuccess = await uploadReport(report);
+                                    if (isSuccess) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      buildFlushBar(
+                                        buildContext: context,
+                                        title:
+                                            "Something Went Wrong Please Try again",
+                                        subtitle:
+                                            "Please make sure you entered the data ",
+                                      );
+                                    }
+                                  } else {
+                                    buildFlushBar(
+                                      buildContext: context,
+                                      title: "Incomplete Information",
+                                      subtitle:
+                                          "Please enter the data which is required",
+                                    );
+                                  }
+
+                                  BlocProvider.of<GlobalBloc>(context)
+                                      .add(SetToInitial());
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.lightGreen[600],
+                                    ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Center(
+                                          child: Text(
+                                        "Save Report",
+                                        style: TextStyle(
+                                          color: Colors.lightGreen[600],
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 1,
+                                        ),
+                                      ))
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        )
+                  )
                 ],
               ),
             ),

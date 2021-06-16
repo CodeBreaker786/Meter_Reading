@@ -8,10 +8,12 @@ import 'package:metr_reading/screens/loginpagescreen.dart';
 import 'package:metr_reading/screens/home_page.dart';
 
 void main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
@@ -20,12 +22,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [BlocProvider<GlobalBloc>(create: (context) => GlobalBloc())],
       child: MaterialApp(
-        theme: ThemeData(primaryColor: Colors.green, accentColor: Colors.green),
+        theme: ThemeData(
+          primaryColor: Colors.green,
+          primarySwatch: Colors.green,
+        ),
         initialRoute: '/wraper',
         routes: {
           '/wraper': (context) => LoginWrapper(),
           '/home': (context) => HomePage(),
           '/loginpage': (context) => LoginPage(),
+          
+          
         },
       ),
     );
@@ -33,3 +40,4 @@ class MyApp extends StatelessWidget {
 }
 
 // }
+ 
