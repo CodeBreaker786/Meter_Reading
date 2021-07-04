@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 import 'package:metr_reading/models/meter.dart';
+import 'package:metr_reading/models/test_meter.dart';
 
 class Report {
   String client;
@@ -19,22 +19,24 @@ class Report {
   String accompainedBy;
   String siteEngineer;
   String siteEngineerEmail;
+  TestMeter testMeter;
   List<Meter> meters;
   Report({
-    @required this.client,
-    @required this.site,
-    @required this.building,
-    @required this.customerReferenceNo,
-    @required this.carriedoutonbehalfof,
-    @required this.contactName,
-    @required this.email,
-    @required this.phoneNo,
-    @required this.survey,
-    @required this.dateSurveyCarriedOut,
-    @required this.accompainedBy,
-    @required this.siteEngineer,
-    @required this.siteEngineerEmail,
-    @required this.meters,
+    this.client,
+    this.site,
+    this.building,
+    this.customerReferenceNo,
+    this.carriedoutonbehalfof,
+    this.contactName,
+    this.email,
+    this.phoneNo,
+    this.survey,
+    this.dateSurveyCarriedOut,
+    this.accompainedBy,
+    this.siteEngineer,
+    this.siteEngineerEmail,
+    this.testMeter,
+    this.meters,
   });
 
   Report copyWith({
@@ -51,6 +53,7 @@ class Report {
     String accompainedBy,
     String siteEngineer,
     String siteEngineerEmail,
+    TestMeter testMeter,
     List<Meter> meters,
   }) {
     return Report(
@@ -67,6 +70,7 @@ class Report {
       accompainedBy: accompainedBy ?? this.accompainedBy,
       siteEngineer: siteEngineer ?? this.siteEngineer,
       siteEngineerEmail: siteEngineerEmail ?? this.siteEngineerEmail,
+      testMeter: testMeter ?? this.testMeter,
       meters: meters ?? this.meters,
     );
   }
@@ -82,10 +86,11 @@ class Report {
       'email': email,
       'phoneNo': phoneNo,
       'survey': survey,
-      'dateSurveyCarriedOut': dateSurveyCarriedOut,
+      'dateSurveyCarriedOut': dateSurveyCarriedOut.millisecondsSinceEpoch,
       'accompainedBy': accompainedBy,
       'siteEngineer': siteEngineer,
       'siteEngineerEmail': siteEngineerEmail,
+      'testMeter': testMeter.toMap(),
       'meters': meters?.map((x) => x.toMap())?.toList(),
     };
   }
@@ -101,10 +106,12 @@ class Report {
       email: map['email'],
       phoneNo: map['phoneNo'],
       survey: map['survey'],
-      dateSurveyCarriedOut: map['dateSurveyCarriedOut'].toDate(),
+      dateSurveyCarriedOut:
+          DateTime.fromMillisecondsSinceEpoch(map['dateSurveyCarriedOut']),
       accompainedBy: map['accompainedBy'],
       siteEngineer: map['siteEngineer'],
       siteEngineerEmail: map['siteEngineerEmail'],
+      testMeter: TestMeter.fromMap(map['testMeter']),
       meters: List<Meter>.from(map['meters']?.map((x) => Meter.fromMap(x))),
     );
   }
@@ -115,7 +122,7 @@ class Report {
 
   @override
   String toString() {
-    return 'Report(client: $client, site: $site, building: $building, customerReferenceNo: $customerReferenceNo, carriedoutonbehalfof: $carriedoutonbehalfof, contactName: $contactName, email: $email, phoneNo: $phoneNo, survey: $survey, dateSurveyCarriedOut: $dateSurveyCarriedOut, accompainedBy: $accompainedBy, siteEngineer: $siteEngineer, siteEngineerEmail: $siteEngineerEmail, meters: $meters)';
+    return 'Report(client: $client, site: $site, building: $building, customerReferenceNo: $customerReferenceNo, carriedoutonbehalfof: $carriedoutonbehalfof, contactName: $contactName, email: $email, phoneNo: $phoneNo, survey: $survey, dateSurveyCarriedOut: $dateSurveyCarriedOut, accompainedBy: $accompainedBy, siteEngineer: $siteEngineer, siteEngineerEmail: $siteEngineerEmail, testMeter: $testMeter, meters: $meters)';
   }
 
   @override
@@ -136,6 +143,7 @@ class Report {
         other.accompainedBy == accompainedBy &&
         other.siteEngineer == siteEngineer &&
         other.siteEngineerEmail == siteEngineerEmail &&
+        other.testMeter == testMeter &&
         listEquals(other.meters, meters);
   }
 
@@ -154,6 +162,7 @@ class Report {
         accompainedBy.hashCode ^
         siteEngineer.hashCode ^
         siteEngineerEmail.hashCode ^
+        testMeter.hashCode ^
         meters.hashCode;
   }
 }

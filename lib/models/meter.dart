@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:metr_reading/models/test_meter.dart';
+ 
 
 class Meter {
   String meter;
@@ -37,45 +37,43 @@ class Meter {
   String volumeOnMeter;
   String volumeOnBMS;
   String note;
-  TestMeter testMeter;
+ 
   Meter({
-     this.meter,
-     this.supplyReference,
-     this.supplyName,
-     this.supplyNumber,
-     this.meterType,
-     this.meterRead,
-     this.parentMeter,
-     this.manufacturer,
-     this.meterModel,
-     this.floor,
-     this.demiseServed,
-     this.location,
-     this.mID,
-     this.aMR,
-     this.onNetwork,
-     this.onBuss,
-     this.commonProtocol,
-     this.slaveID,
-     this.pluseLeadRequuired,
-     this.electricMeterPluse,
-     this.voltageL1L2L3Ok,
-     this.ctPhaseOrientationOk,
-     this.currentTestedOk,
-     this.ctRationOnMeter,
-     this.breakerRating,
-     this.mainT1Temperature,
-     this.batteryT1Temperature,
-     this.thermalImageNo,
-     this.kT12,
-     this.kW,
-     this.flowRate,
-     this.volumeOnMeter,
-     this.volumeOnBMS,
-     this.note,
-     this.testMeter,
+    this.meter,
+    this.supplyReference,
+    this.supplyName,
+    this.supplyNumber,
+    this.meterType,
+    this.meterRead,
+    this.parentMeter,
+    this.manufacturer,
+    this.meterModel,
+    this.floor,
+    this.demiseServed,
+    this.location,
+    this.mID,
+    this.aMR,
+    this.onNetwork,
+    this.onBuss,
+    this.commonProtocol,
+    this.slaveID,
+    this.pluseLeadRequuired,
+    this.electricMeterPluse,
+    this.voltageL1L2L3Ok,
+    this.ctPhaseOrientationOk,
+    this.currentTestedOk,
+    this.ctRationOnMeter,
+    this.breakerRating,
+    this.mainT1Temperature,
+    this.batteryT1Temperature,
+    this.thermalImageNo,
+    this.kT12,
+    this.kW,
+    this.flowRate,
+    this.volumeOnMeter,
+    this.volumeOnBMS,
+    this.note,
   });
-   
 
   Meter copyWith({
     String meter,
@@ -112,7 +110,6 @@ class Meter {
     String volumeOnMeter,
     String volumeOnBMS,
     String note,
-    TestMeter testMeter,
   }) {
     return Meter(
       meter: meter ?? this.meter,
@@ -149,7 +146,6 @@ class Meter {
       volumeOnMeter: volumeOnMeter ?? this.volumeOnMeter,
       volumeOnBMS: volumeOnBMS ?? this.volumeOnBMS,
       note: note ?? this.note,
-      testMeter: testMeter ?? this.testMeter,
     );
   }
 
@@ -189,7 +185,6 @@ class Meter {
       'volumeOnMeter': volumeOnMeter,
       'volumeOnBMS': volumeOnBMS,
       'note': note,
-      'testMeter': testMeter.toMap(),
     };
   }
 
@@ -229,7 +224,6 @@ class Meter {
       volumeOnMeter: map['volumeOnMeter'],
       volumeOnBMS: map['volumeOnBMS'],
       note: map['note'],
-      testMeter: TestMeter.fromMap(map['testMeter']),
     );
   }
 
@@ -239,87 +233,85 @@ class Meter {
 
   @override
   String toString() {
-    return 'Meter(meter: $meter, supplyReference: $supplyReference, supplyName: $supplyName, supplyNumber: $supplyNumber, meterType: $meterType, meterRead: $meterRead, parentMeter: $parentMeter, manufacturer: $manufacturer, meterModel: $meterModel, floor: $floor, demiseServed: $demiseServed, location: $location, mID: $mID, aMR: $aMR, onNetwork: $onNetwork, onBuss: $onBuss, commonProtocol: $commonProtocol, slaveID: $slaveID, pluseLeadRequuired: $pluseLeadRequuired, electricMeterPluse: $electricMeterPluse, voltageL1L2L3Ok: $voltageL1L2L3Ok, ctPhaseOrientationOk: $ctPhaseOrientationOk, currentTestedOk: $currentTestedOk, ctRationOnMeter: $ctRationOnMeter, breakerRating: $breakerRating, mainT1Temperature: $mainT1Temperature, batteryT1Temperature: $batteryT1Temperature, thermalImageNo: $thermalImageNo, kT12: $kT12, kW: $kW, flowRate: $flowRate, volumeOnMeter: $volumeOnMeter, volumeOnBMS: $volumeOnBMS, note: $note, testMeter: $testMeter)';
+    return 'Meter(meter: $meter, supplyReference: $supplyReference, supplyName: $supplyName, supplyNumber: $supplyNumber, meterType: $meterType, meterRead: $meterRead, parentMeter: $parentMeter, manufacturer: $manufacturer, meterModel: $meterModel, floor: $floor, demiseServed: $demiseServed, location: $location, mID: $mID, aMR: $aMR, onNetwork: $onNetwork, onBuss: $onBuss, commonProtocol: $commonProtocol, slaveID: $slaveID, pluseLeadRequuired: $pluseLeadRequuired, electricMeterPluse: $electricMeterPluse, voltageL1L2L3Ok: $voltageL1L2L3Ok, ctPhaseOrientationOk: $ctPhaseOrientationOk, currentTestedOk: $currentTestedOk, ctRationOnMeter: $ctRationOnMeter, breakerRating: $breakerRating, mainT1Temperature: $mainT1Temperature, batteryT1Temperature: $batteryT1Temperature, thermalImageNo: $thermalImageNo, kT12: $kT12, kW: $kW, flowRate: $flowRate, volumeOnMeter: $volumeOnMeter, volumeOnBMS: $volumeOnBMS, note: $note)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Meter &&
-      other.meter == meter &&
-      other.supplyReference == supplyReference &&
-      other.supplyName == supplyName &&
-      other.supplyNumber == supplyNumber &&
-      other.meterType == meterType &&
-      other.meterRead == meterRead &&
-      other.parentMeter == parentMeter &&
-      other.manufacturer == manufacturer &&
-      other.meterModel == meterModel &&
-      other.floor == floor &&
-      other.demiseServed == demiseServed &&
-      other.location == location &&
-      other.mID == mID &&
-      other.aMR == aMR &&
-      other.onNetwork == onNetwork &&
-      other.onBuss == onBuss &&
-      other.commonProtocol == commonProtocol &&
-      other.slaveID == slaveID &&
-      other.pluseLeadRequuired == pluseLeadRequuired &&
-      other.electricMeterPluse == electricMeterPluse &&
-      other.voltageL1L2L3Ok == voltageL1L2L3Ok &&
-      other.ctPhaseOrientationOk == ctPhaseOrientationOk &&
-      other.currentTestedOk == currentTestedOk &&
-      other.ctRationOnMeter == ctRationOnMeter &&
-      other.breakerRating == breakerRating &&
-      other.mainT1Temperature == mainT1Temperature &&
-      other.batteryT1Temperature == batteryT1Temperature &&
-      other.thermalImageNo == thermalImageNo &&
-      other.kT12 == kT12 &&
-      other.kW == kW &&
-      other.flowRate == flowRate &&
-      other.volumeOnMeter == volumeOnMeter &&
-      other.volumeOnBMS == volumeOnBMS &&
-      other.note == note &&
-      other.testMeter == testMeter;
+        other.meter == meter &&
+        other.supplyReference == supplyReference &&
+        other.supplyName == supplyName &&
+        other.supplyNumber == supplyNumber &&
+        other.meterType == meterType &&
+        other.meterRead == meterRead &&
+        other.parentMeter == parentMeter &&
+        other.manufacturer == manufacturer &&
+        other.meterModel == meterModel &&
+        other.floor == floor &&
+        other.demiseServed == demiseServed &&
+        other.location == location &&
+        other.mID == mID &&
+        other.aMR == aMR &&
+        other.onNetwork == onNetwork &&
+        other.onBuss == onBuss &&
+        other.commonProtocol == commonProtocol &&
+        other.slaveID == slaveID &&
+        other.pluseLeadRequuired == pluseLeadRequuired &&
+        other.electricMeterPluse == electricMeterPluse &&
+        other.voltageL1L2L3Ok == voltageL1L2L3Ok &&
+        other.ctPhaseOrientationOk == ctPhaseOrientationOk &&
+        other.currentTestedOk == currentTestedOk &&
+        other.ctRationOnMeter == ctRationOnMeter &&
+        other.breakerRating == breakerRating &&
+        other.mainT1Temperature == mainT1Temperature &&
+        other.batteryT1Temperature == batteryT1Temperature &&
+        other.thermalImageNo == thermalImageNo &&
+        other.kT12 == kT12 &&
+        other.kW == kW &&
+        other.flowRate == flowRate &&
+        other.volumeOnMeter == volumeOnMeter &&
+        other.volumeOnBMS == volumeOnBMS &&
+        other.note == note;
   }
 
   @override
   int get hashCode {
     return meter.hashCode ^
-      supplyReference.hashCode ^
-      supplyName.hashCode ^
-      supplyNumber.hashCode ^
-      meterType.hashCode ^
-      meterRead.hashCode ^
-      parentMeter.hashCode ^
-      manufacturer.hashCode ^
-      meterModel.hashCode ^
-      floor.hashCode ^
-      demiseServed.hashCode ^
-      location.hashCode ^
-      mID.hashCode ^
-      aMR.hashCode ^
-      onNetwork.hashCode ^
-      onBuss.hashCode ^
-      commonProtocol.hashCode ^
-      slaveID.hashCode ^
-      pluseLeadRequuired.hashCode ^
-      electricMeterPluse.hashCode ^
-      voltageL1L2L3Ok.hashCode ^
-      ctPhaseOrientationOk.hashCode ^
-      currentTestedOk.hashCode ^
-      ctRationOnMeter.hashCode ^
-      breakerRating.hashCode ^
-      mainT1Temperature.hashCode ^
-      batteryT1Temperature.hashCode ^
-      thermalImageNo.hashCode ^
-      kT12.hashCode ^
-      kW.hashCode ^
-      flowRate.hashCode ^
-      volumeOnMeter.hashCode ^
-      volumeOnBMS.hashCode ^
-      note.hashCode ^
-      testMeter.hashCode;
+        supplyReference.hashCode ^
+        supplyName.hashCode ^
+        supplyNumber.hashCode ^
+        meterType.hashCode ^
+        meterRead.hashCode ^
+        parentMeter.hashCode ^
+        manufacturer.hashCode ^
+        meterModel.hashCode ^
+        floor.hashCode ^
+        demiseServed.hashCode ^
+        location.hashCode ^
+        mID.hashCode ^
+        aMR.hashCode ^
+        onNetwork.hashCode ^
+        onBuss.hashCode ^
+        commonProtocol.hashCode ^
+        slaveID.hashCode ^
+        pluseLeadRequuired.hashCode ^
+        electricMeterPluse.hashCode ^
+        voltageL1L2L3Ok.hashCode ^
+        ctPhaseOrientationOk.hashCode ^
+        currentTestedOk.hashCode ^
+        ctRationOnMeter.hashCode ^
+        breakerRating.hashCode ^
+        mainT1Temperature.hashCode ^
+        batteryT1Temperature.hashCode ^
+        thermalImageNo.hashCode ^
+        kT12.hashCode ^
+        kW.hashCode ^
+        flowRate.hashCode ^
+        volumeOnMeter.hashCode ^
+        volumeOnBMS.hashCode ^
+        note.hashCode;
   }
 }
