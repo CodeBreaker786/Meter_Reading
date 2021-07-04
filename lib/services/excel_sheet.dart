@@ -64,9 +64,7 @@ void createExcelSheet({Report report}) async {
           .setText(report.meters[i].supplyName.toString());
       sheet.getRangeByName('G${i + 2}').setText('Supply Notes');
       sheet.getRangeByName('H${i + 2}').setText('Supply Notes');
-      sheet
-          .getRangeByName('I${i + 2}')
-          .setText(report.meters[i].serialNumber.toString());
+
       sheet.getRangeByName('J${i + 2}').setText('Modbus Slave?');
       sheet
           .getRangeByName('K${i + 2}')

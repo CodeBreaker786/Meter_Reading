@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class GlobalTextField extends StatelessWidget {
   final hintText;
   final controller;
+  final prefixText;
   Function validator;
   GlobalTextField(
       {Key key,
       @required this.hintText,
       @required this.controller,
+      this.prefixText,
       this.validator})
       : super(key: key);
 
@@ -30,6 +32,7 @@ class GlobalTextField extends StatelessWidget {
               borderSide: BorderSide(color: Colors.green),
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
+            prefixText: prefixText,
             labelText: hintText,
             labelStyle: TextStyle(
               fontSize: 18,

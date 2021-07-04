@@ -3,6 +3,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:metr_reading/models/report.dart';
+import 'package:metr_reading/screens/create_report_home.dart';
+import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/services/excel_sheet.dart';
 import 'package:metr_reading/services/pfd.dart';
 
@@ -88,9 +90,6 @@ class ReportViwer extends StatelessWidget {
                                 title: "Meter type",
                                 info: meter.meterType.toString()),
                             buildTableCellRow(
-                                title: "Serial Number",
-                                info: meter.serialNumber.toString()),
-                            buildTableCellRow(
                                 title: "MID", info: meter.mID.toString()),
                             buildTableCellRow(
                                 title: "AMR", info: meter.aMR.toString()),
@@ -103,9 +102,6 @@ class ReportViwer extends StatelessWidget {
                             buildTableCellRow(
                                 title: "On BMS", info: meter.onBuss.toString()),
                             buildTableCellRow(
-                                title: "Slave ID",
-                                info: meter.slaveID.toString()),
-                            buildTableCellRow(
                                 title: "Meter Location",
                                 info: meter.location.toString()),
                             buildTableCellRow(
@@ -117,7 +113,133 @@ class ReportViwer extends StatelessWidget {
                                 title: "Demise served",
                                 info: meter.demiseServed.toString()),
                           ]),
-                    )
+                    ),
+                    buildInfoRow(
+                      title: 'Notes:',
+                      info: report.contactName,
+                    ),
+                    buildInfoRow(
+                      title: 'Issues:',
+                      color: Colors.red,
+                      info: report.contactName,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Base of Electric Meter report",
+                        style: buildTileTitleStyle()
+                            .copyWith(color: Colors.black54),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Table(
+                            border: TableBorder.all(width: 2),
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              buildTableCellRow(
+                                  title: "Average Voltage", info: ''),
+                              buildTableCellRow(
+                                  title: "Voltage Check", info: ''),
+                              buildTableCellRow(
+                                  title: "CT Phase Direction /orientation",
+                                  info: getStringFromBool(
+                                      meter.ctPhaseOrientationOk)),
+                              buildTableCellRow(
+                                  title: "Current Test (Value on Meter)",
+                                  info:
+                                      getStringFromBool(meter.currentTestedOk)),
+                              buildTableCellRow(
+                                  title: "Current Test (Value on Test Meter)",
+                                  info: ''),
+                              buildTableCellRow(
+                                  title: "Breaker rating",
+                                  info: meter.breakerRating.toString()),
+                            ])),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Base of Water Meter report",
+                        style: buildTileTitleStyle()
+                            .copyWith(color: Colors.black54),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Table(
+                            border: TableBorder.all(width: 2),
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              buildTableCellRow(
+                                  title: "Pulse Lead required",
+                                  info: getStringFromBool(
+                                      meter.pluseLeadRequuired)),
+                            ])),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Base of Gas Meter report",
+                        style: buildTileTitleStyle()
+                            .copyWith(color: Colors.black54),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Table(
+                            border: TableBorder.all(width: 2),
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              buildTableCellRow(
+                                  title: "Pulse Lead required",
+                                  info: getStringFromBool(
+                                      meter.pluseLeadRequuired)),
+                            ])),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Base of Heat Meter report",
+                        style: buildTileTitleStyle()
+                            .copyWith(color: Colors.black54),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Table(
+                            border: TableBorder.all(width: 2),
+                            defaultVerticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            children: [
+                              buildTableCellRow(
+                                  title: "Pulse Lead required",
+                                  info: getStringFromBool(
+                                      meter.pluseLeadRequuired)),
+                              buildTableCellRow(
+                                  title: "Powered by",
+                                  info: getStringFromBool(
+                                      meter.pluseLeadRequuired)),
+                              buildTableCellRow(
+                                  title: "T1 Temp",
+                                  info: meter.mainT1Temperature),
+                              buildTableCellRow(
+                                  title: "T2 Temp",
+                                  info: meter.batteryT1Temperature),
+                              buildTableCellRow(
+                                  title: "K (T1-T2)", info: meter.kT12),
+                              buildTableCellRow(
+                                  title: "Flow Rate", info: meter.flowRate),
+                              buildTableCellRow(
+                                  title: "Flow Rate Unit", info: ''),
+                              buildTableCellRow(title: "kW", info: meter.kW),
+                              buildTableCellRow(
+                                  title: "Volume on BMS",
+                                  info: meter.volumeOnBMS),
+                              buildTableCellRow(
+                                  title: "Date /Time Reading taken from BMS",
+                                  info: ''),
+                            ]))
                   ],
                 );
               }),
@@ -194,19 +316,67 @@ class ReportViwer extends StatelessWidget {
     ]);
   }
 
-  buildInfoRow({String title, String info}) {
+  buildTableTwoCellRow({String title, String info}) {
+    return TableRow(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          title,
+          textScaleFactor: 1.5,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(info, textScaleFactor: 1.5),
+      ),
+    ]);
+  }
+
+  buildTableFiveCellRow(
+      {String title, String info1, String info2, String info3, String info4}) {
+    return TableRow(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          title,
+          textScaleFactor: 1,
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(info1, textScaleFactor: 1),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(info2, textScaleFactor: 1),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(info3, textScaleFactor: 1),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(info4, textScaleFactor: 1),
+      ),
+    ]);
+  }
+
+  buildInfoRow({String title, String info, Color color}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: color != null ? color : Colors.black54)),
           Text(info,
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey)),
+                  color: color != null ? color : Colors.grey)),
         ],
       ),
     );

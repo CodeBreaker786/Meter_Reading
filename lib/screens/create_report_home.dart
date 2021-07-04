@@ -309,37 +309,17 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                       'Water'
                                     ];
                                   }),
-                                   GlobalDropdwon(
-                                  hintText: 'Meter Type',
-                                  textEditingController:
-                                      _editingControllerMeter,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _editingControllerMeter.text = value;
-                                    });
-                                  },
-                                  getItemList: (searchText) async {
-                                    await Future.delayed(
-                                        Duration(seconds: 0), () {});
-                                    return [
-                                      'Thermal',
-                                      'Electric',
-                                      'Gas',
-                                      'Water'
-                                    ];
-                                  }),
-
                               GlobalTextField(
-                                hintText: 'Model:',
-                                controller: _editingControllerModel,
-                              ),
-                              GlobalTextField(
-                                hintText: 'Make:',
+                                hintText: ' Meter Make',
                                 controller: _editingControllerMake,
                               ),
+                              GlobalTextField(
+                                hintText: 'Meter Model',
+                                controller: _editingControllerModel,
+                              ),
 
                               GlobalTextField(
-                                hintText: 'Serial No:',
+                                hintText: 'Serial Number',
                                 controller: _editingControllerSerialNo,
                               ),
                               SizedBox(

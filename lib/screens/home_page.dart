@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:metr_reading/models/report.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
+import 'package:metr_reading/screens/report_viwer.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/const.dart';
 
@@ -14,19 +16,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
-  bool widgetVisible = false;
-
-  void showWidget() {
-    setState(() {
-      widgetVisible = true;
-    });
-  }
-
-  void hideWidget() {
-    setState(() {
-      widgetVisible = false;
-    });
-  }
+  int repoIndex;
+  List<Report> reports = [];
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +49,18 @@ class _HomePageState extends State<HomePage> {
           stream: getReports(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
-              List<Report> reports = [];
               snapshot.data.docs.forEach(
                   (report) => reports.add(Report.fromMap(report.data())));
               return PageView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: reports.length,
                 itemBuilder: (context, index) {
+                  index = index;
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -98,84 +91,101 @@ class _HomePageState extends State<HomePage> {
                               title: 'Carried out on behalf of:',
                               info: reports[index].carriedoutonbehalfof,
                             ),
-                            reports[index].meters.length != 0
-                                ? ListView.separated(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    controller: _scrollController,
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: reports[index].meters.length,
-                                    itemBuilder: (context, index) {
-                                      return Slidable(
-                                        actionPane: SlidableDrawerActionPane(),
-                                        //  actionExtentRatio: 0.25,
-                                        child: Container(
-                                          color: Colors.green.withOpacity(.4),
-                                          child: ListTile(
-                                            leading: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              backgroundImage: AssetImage(
-                                                'assets/meter.png',
+                            buildInfoRow(
+                              title: 'Meters',
+                              info: '',
+                            ),
+                            Expanded(
+                              child: reports[index].meters.length != 0
+                                  ? SingleChildScrollView(
+                                      child: ListView.separated(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        controller: _scrollController,
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: reports[index].meters.length,
+                                        itemBuilder: (context, index) {
+                                          repoIndex = index;
+                                          return Slidable(
+                                            actionPane:
+                                                SlidableDrawerActionPane(),
+                                            //  actionExtentRatio: 0.25,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.green
+                                                      .withOpacity(.4),
+                                                  borderRadius:
+                                                      BorderRadius.circular(6)),
+                                              child: ListTile(
+                                                leading: CircleAvatar(
+                                                  backgroundColor: Colors.white,
+                                                  backgroundImage: AssetImage(
+                                                    'assets/meter.png',
+                                                  ),
+                                                  foregroundColor: Colors.white,
+                                                ),
+                                                title:
+                                                    Text(reports[index].client),
+                                                subtitle:
+                                                    Text(reports[index].site),
                                               ),
-                                              foregroundColor: Colors.white,
                                             ),
-                                            title: Text('Tile no $index'),
-                                            subtitle:
-                                                Text('SlidableDrawerDelegate'),
-                                          ),
+                                            actions: <Widget>[
+                                              IconSlideAction(
+                                                caption: 'Archive',
+                                                color: Colors.blue,
+                                                icon: Icons.archive,
+                                                onTap: () => null,
+                                              ),
+                                              IconSlideAction(
+                                                caption: 'Share',
+                                                color: Colors.indigo,
+                                                icon: Icons.share,
+                                                onTap: () => null,
+                                              ),
+                                            ],
+                                            secondaryActions: <Widget>[
+                                              IconSlideAction(
+                                                caption: 'More',
+                                                color: Colors.black45,
+                                                icon: Icons.more_horiz,
+                                                onTap: () => null,
+                                              ),
+                                              IconSlideAction(
+                                                caption: 'Delete',
+                                                color: Colors.red,
+                                                icon: Icons.delete,
+                                                onTap: () {
+                                                  reports[index]
+                                                      .meters
+                                                      .removeAt(index);
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider(
+                                            height: 1,
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 30),
+                                        child: Text(
+                                          "No Meter added yet ",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey),
                                         ),
-                                        actions: <Widget>[
-                                          IconSlideAction(
-                                            caption: 'Archive',
-                                            color: Colors.blue,
-                                            icon: Icons.archive,
-                                            onTap: () => null,
-                                          ),
-                                          IconSlideAction(
-                                            caption: 'Share',
-                                            color: Colors.indigo,
-                                            icon: Icons.share,
-                                            onTap: () => null,
-                                          ),
-                                        ],
-                                        secondaryActions: <Widget>[
-                                          IconSlideAction(
-                                            caption: 'More',
-                                            color: Colors.black45,
-                                            icon: Icons.more_horiz,
-                                            onTap: () => null,
-                                          ),
-                                          IconSlideAction(
-                                            caption: 'Delete',
-                                            color: Colors.red,
-                                            icon: Icons.delete,
-                                            onTap: () {
-                                              reports[index]
-                                                  .meters
-                                                  .removeAt(index);
-                                              setState(() {});
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) {
-                                      return Divider(
-                                        height: 1,
-                                      );
-                                    },
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 30),
-                                    child: Text(
-                                      "No Meter added yet ",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.grey),
+                                      ),
                                     ),
-                                  )
+                            )
                           ],
                         ),
                       ),
@@ -187,16 +197,55 @@ class _HomePageState extends State<HomePage> {
 
             return Center(child: CircularProgressIndicator());
           }),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => CreateReportPage(),
+      floatingActionButton: SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          animatedIconTheme: IconThemeData(size: 28.0, color: Colors.white),
+          backgroundColor: Colors.green,
+          visible: true,
+          curve: Curves.bounceInOut,
+          children: [
+            SpeedDialChild(
+              child: Icon(Icons.open_in_new, color: Colors.white),
+              backgroundColor: Colors.green,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => CreateReportPage(),
+                  ),
+                );
+              },
+              label: 'Add New Meter',
+              labelStyle:
+                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+              labelBackgroundColor: Colors.lightGreen[600],
             ),
-          );
-        },
-      ),
+            SpeedDialChild(
+              child: Icon(Icons.edit, color: Colors.white),
+              backgroundColor: Colors.green,
+              onTap: () {},
+              label: 'Edit Report',
+              labelStyle:
+                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+              labelBackgroundColor: Colors.lightGreen[600],
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.view_quilt, color: Colors.white),
+              backgroundColor: Colors.green,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ReportViwer(
+                      report: reports[repoIndex],
+                    ),
+                  ),
+                );
+              },
+              label: 'View Report',
+              labelStyle:
+                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+              labelBackgroundColor: Colors.lightGreen[600],
+            )
+          ]),
     );
   }
 
@@ -223,10 +272,10 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           Text(info,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey)),
         ],

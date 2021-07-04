@@ -30,3 +30,11 @@ getManufactures() async {
   DocumentSnapshot documentSnapshot =
       await _firestore.collection(MANUFACTURS).doc().get();
 }
+
+String getStringFromBool(bool value) {
+  if (value) {
+    return 'Yes';
+  } else {
+    return 'No';
+  }
+}
