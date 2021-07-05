@@ -8,6 +8,7 @@ import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/screens/report_viwer.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/const.dart';
+import 'package:metr_reading/widgets/flush_bar.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -231,14 +232,21 @@ class _HomePageState extends State<HomePage> {
             SpeedDialChild(
               child: Icon(Icons.view_quilt, color: Colors.white),
               backgroundColor: Colors.green,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => ReportViwer(
-                      report: reports[repoIndex],
+              onTap: () async {
+                if (reports[repoIndex] != null) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ReportViwer(
+                        report: reports[repoIndex],
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  await buildFlushBar(
+                      buildContext: context,
+                      title: "Please Select Report First",
+                      isError: true);
+                }
               },
               label: 'View Report',
               labelStyle:
