@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:path/path.dart' as Path;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -7,8 +10,11 @@ import 'package:intl/intl.dart';
 import 'package:metr_reading/global/bloc/global_bloc.dart';
 import 'package:metr_reading/models/meter.dart';
 import 'package:metr_reading/models/report.dart';
+import 'package:metr_reading/models/test_meter.dart';
 import 'package:metr_reading/screens/add_meter_page.dart';
 import 'package:metr_reading/services/could_firebase.dart';
+import 'package:metr_reading/utils/get_file_size.dart';
+import 'package:metr_reading/utils/upload_file.dart';
 import 'package:metr_reading/widgets/flush_bar.dart';
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
@@ -31,7 +37,8 @@ class _CreateReportPageState extends State<CreateReportPage> {
   TextEditingController _editingControllerContactName = TextEditingController();
   TextEditingController _editingControllerEmail = TextEditingController();
   TextEditingController _editingControllerPhohneNo = TextEditingController();
-  TextEditingController _editingControllerSurvey = TextEditingController();
+  TextEditingController _editingControllerSiteEngineerPhoneNo =
+      TextEditingController();
   TextEditingController _editingControllerDateSurveyCarriedOut =
       TextEditingController();
   TextEditingController _editingControllerAccompainedBy =
@@ -46,11 +53,13 @@ class _CreateReportPageState extends State<CreateReportPage> {
   TextEditingController _editingControllerMeter = TextEditingController();
   List<Meter> meters = [];
   Report report;
+  File attachCalibrationCertificate;
   final ScrollController _scrollController = ScrollController();
 
   List<bool> meterToggle = List.generate(3, (index) => false);
   final df = DateFormat('dd-MM-yyyy');
   DateTime dateTime;
+  String fileSize = '';
 
   @override
   void initState() {
@@ -182,19 +191,6 @@ class _CreateReportPageState extends State<CreateReportPage> {
                             ),
                             //survey carried out by drop down menu
 
-                            GlobalDropdwon(
-                                textEditingController: _editingControllerSurvey,
-                                hintText: 'Survey',
-                                onChanged: (value) {
-                                  setState(() {
-                                    _editingControllerSurvey.text = value;
-                                  });
-                                },
-                                getItemList: (searchText) async {
-                                  await Future.delayed(
-                                      Duration(seconds: 1), () {});
-                                  return ['$searchText'];
-                                }),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 12),
@@ -269,6 +265,10 @@ class _CreateReportPageState extends State<CreateReportPage> {
                               controller: _editingControllerSiteEngineer,
                             ),
                             GlobalTextField(
+                              hintText: 'Site Engineer Phone No',
+                              controller: _editingControllerSiteEngineerPhoneNo,
+                            ),
+                            GlobalTextField(
                               hintText: 'Site Engineer E-mail',
                               controller: _editingControllerSiteEngineerEmail,
                             ),
@@ -328,34 +328,82 @@ class _CreateReportPageState extends State<CreateReportPage> {
 
                               //selectioncontainer
 
-                              SizedBox(
-                                height: 20,
-                              ),
-
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                      icon: Icon(
-                                        MaterialIcons.attach_file,
-                                        size: 40,
-                                        color: Colors.lightGreen[600],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: attachCalibrationCertificate == null
+                                    ? InkWell(
+                                        onTap: () async {
+                                          FilePickerResult result =
+                                              await FilePicker.platform
+                                                  .pickFiles();
+                                          if (result != null) {
+                                            attachCalibrationCertificate =
+                                                await File(result
+                                                        .files.single.path)
+                                                    .create();
+                                            fileSize = await getFileSize(
+                                                attachCalibrationCertificate
+                                                    .path,
+                                                1);
+                                            setState(() {});
+                                          } else {}
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                                icon: Icon(
+                                                  MaterialIcons.file_upload,
+                                                  size: 40,
+                                                  color: Colors.lightGreen[600],
+                                                ),
+                                                onPressed: null),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 15),
+                                              child: Text(
+                                                'Attach Calibration\nCertificate',
+                                                style: TextStyle(
+                                                  color: Colors.lightGreen[600],
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    : ListTile(
+                                        title: Text(
+                                          Path.basename(
+                                                  attachCalibrationCertificate
+                                                      .path)
+                                              .toString(),
+                                          style: TextStyle(
+                                            color: Colors.lightGreen[600],
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        subtitle: Text(fileSize),
+                                        trailing: InkWell(
+                                            onTap: () async {
+                                              await File(
+                                                      attachCalibrationCertificate
+                                                          .path)
+                                                  .delete();
+                                              attachCalibrationCertificate =
+                                                  null;
+                                              setState(() {});
+                                            },
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            )),
                                       ),
-                                      onPressed: null),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 15),
-                                    child: Text(
-                                      'Attach Calibration\nCertificate',
-                                      style: TextStyle(
-                                        color: Colors.lightGreen[600],
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  )
-                                ],
                               ),
                               SizedBox(
                                 height: 40,
@@ -490,6 +538,11 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                   await Future.delayed(
                                       Duration(milliseconds: 100));
                                   if (_formKey.currentState.validate()) {
+                                    BlocProvider.of<GlobalBloc>(context)
+                                        .add(ShowLoadingIndicator());
+                                    String fileURL = await uploadFile(
+                                        attachCalibrationCertificate);
+
                                     report = Report(
                                         site: _editingControllerSite.text,
                                         client: _editingControllerClient.text,
@@ -504,7 +557,9 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                         email: _editingControllerEmail.text,
                                         phoneNo:
                                             _editingControllerPhohneNo.text,
-                                        survey: _editingControllerSurvey.text,
+                                        siteEngineerphoneNo:
+                                            _editingControllerSiteEngineerPhoneNo
+                                                .text,
                                         dateSurveyCarriedOut: dateTime,
                                         accompainedBy:
                                             _editingControllerAccompainedBy
@@ -514,9 +569,20 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                         siteEngineerEmail:
                                             _editingControllerSiteEngineerEmail
                                                 .text,
-                                        meters: meters);
-                                    BlocProvider.of<GlobalBloc>(context)
-                                        .add(ShowLoadingIndicator());
+                                        meters: meters,
+                                        testMeter: TestMeter(
+                                            meterMake: _editingControllerMake.text
+                                                .toString(),
+                                            meterModel: _editingControllerModel
+                                                .text
+                                                .toString(),
+                                            meterType: _editingControllerMeter.text
+                                                .toString(),
+                                            attachCertificate: fileURL,
+                                            serialNumber:
+                                                _editingControllerSerialNo.text
+                                                    .toString()));
+
                                     bool isSuccess = await uploadReport(report);
                                     if (isSuccess) {
                                       Navigator.pop(context);

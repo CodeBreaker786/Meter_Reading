@@ -9,6 +9,7 @@ import 'package:metr_reading/screens/report_viwer.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/const.dart';
 import 'package:metr_reading/widgets/flush_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
-  int repoIndex;
+  int repoIndex = 0;
   List<Report> reports = [];
 
   @override
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.vertical,
                 itemCount: reports.length,
                 itemBuilder: (context, index) {
-                  index = index;
+                  repoIndex = index;
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
@@ -91,6 +92,74 @@ class _HomePageState extends State<HomePage> {
                             buildInfoRow(
                               title: 'Carried out on behalf of:',
                               info: reports[index].carriedoutonbehalfof,
+                            ),
+                            buildInfoRow(
+                              title: 'Carried out by',
+                              info: reports[index].carriedoutonbehalfof,
+                            ),
+                            ExpansionTile(
+                              tilePadding: EdgeInsets.symmetric(horizontal: 8),
+                              title: Text("Test Meter Used",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                              children: [
+                                buildInfoRow(
+                                  title: 'Meter Type',
+                                  info: reports[index].testMeter.meterType,
+                                ),
+                                buildInfoRow(
+                                  title: 'Meter Make',
+                                  info: reports[index].testMeter.meterMake,
+                                ),
+                                buildInfoRow(
+                                  title: 'Meter Modal',
+                                  info: reports[index].testMeter.meterModel,
+                                ),
+                                buildInfoRow(
+                                  title: 'Meter Serial No',
+                                  info: reports[index].testMeter.serialNumber,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('Certificate ',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold)),
+                                      Container(
+                                        height: 25,
+                                        child: ElevatedButton.icon(
+                                          clipBehavior: Clip.antiAlias,
+                                          icon: Icon(
+                                            Icons.link_sharp,
+                                          ),
+                                          label: Text('Open'),
+                                          onPressed: () async {
+                                            await canLaunch(reports[index]
+                                                    .testMeter
+                                                    .attachCertificate)
+                                                ? await launch(reports[index]
+                                                    .testMeter
+                                                    .attachCertificate)
+                                                : await buildFlushBar(
+                                                    buildContext: context,
+                                                    title:
+                                                        "Could not launch url",
+                                                    subtitle: reports[index]
+                                                        .testMeter
+                                                        .attachCertificate,
+                                                    isError: true);
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                             buildInfoRow(
                               title: 'Meters',
@@ -233,7 +302,7 @@ class _HomePageState extends State<HomePage> {
               child: Icon(Icons.view_quilt, color: Colors.white),
               backgroundColor: Colors.green,
               onTap: () async {
-                if (reports[repoIndex] != null) {
+                if (reports.length != 0) {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => ReportViwer(
@@ -244,7 +313,8 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   await buildFlushBar(
                       buildContext: context,
-                      title: "Please Select Report First",
+                      title: "There is no report Founf",
+                      subtitle: "Plaese slect report first",
                       isError: true);
                 }
               },
@@ -257,22 +327,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  buildTableCellRow({String title, String info}) {
-    return TableRow(children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          title,
-          textScaleFactor: 1.5,
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(info, textScaleFactor: 1.5),
-      ),
-    ]);
-  }
-
   buildInfoRow({String title, String info}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -281,11 +335,14 @@ class _HomePageState extends State<HomePage> {
         children: [
           Text(title,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Text(info,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey)),
+          Flexible(
+            child: Text(info,
+                overflow: TextOverflow.clip,
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey)),
+          ),
         ],
       ),
     );

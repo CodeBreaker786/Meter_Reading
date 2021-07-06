@@ -1,3 +1,4 @@
+ 
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -14,7 +15,7 @@ class Report {
   String contactName;
   String email;
   String phoneNo;
-  String survey;
+  String siteEngineerphoneNo;
   DateTime dateSurveyCarriedOut;
   String accompainedBy;
   String siteEngineer;
@@ -22,22 +23,23 @@ class Report {
   TestMeter testMeter;
   List<Meter> meters;
   Report({
-    this.client,
-    this.site,
-    this.building,
-    this.customerReferenceNo,
-    this.carriedoutonbehalfof,
-    this.contactName,
-    this.email,
-    this.phoneNo,
-    this.survey,
-    this.dateSurveyCarriedOut,
-    this.accompainedBy,
-    this.siteEngineer,
-    this.siteEngineerEmail,
-    this.testMeter,
-    this.meters,
+     this.client,
+     this.site,
+     this.building,
+     this.customerReferenceNo,
+     this.carriedoutonbehalfof,
+     this.contactName,
+     this.email,
+     this.phoneNo,
+     this.siteEngineerphoneNo,
+     this.dateSurveyCarriedOut,
+     this.accompainedBy,
+     this.siteEngineer,
+     this.siteEngineerEmail,
+     this.testMeter,
+     this.meters,
   });
+   
 
   Report copyWith({
     String client,
@@ -47,8 +49,8 @@ class Report {
     String carriedoutonbehalfof,
     String contactName,
     String email,
+    String siteEngineerphoneNo,
     String phoneNo,
-    String survey,
     DateTime dateSurveyCarriedOut,
     String accompainedBy,
     String siteEngineer,
@@ -65,7 +67,7 @@ class Report {
       contactName: contactName ?? this.contactName,
       email: email ?? this.email,
       phoneNo: phoneNo ?? this.phoneNo,
-      survey: survey ?? this.survey,
+      siteEngineerphoneNo: siteEngineerphoneNo ?? this.siteEngineerphoneNo,
       dateSurveyCarriedOut: dateSurveyCarriedOut ?? this.dateSurveyCarriedOut,
       accompainedBy: accompainedBy ?? this.accompainedBy,
       siteEngineer: siteEngineer ?? this.siteEngineer,
@@ -85,7 +87,7 @@ class Report {
       'contactName': contactName,
       'email': email,
       'phoneNo': phoneNo,
-      'survey': survey,
+      'siteEngineerphoneNo': siteEngineerphoneNo,
       'dateSurveyCarriedOut': dateSurveyCarriedOut.millisecondsSinceEpoch,
       'accompainedBy': accompainedBy,
       'siteEngineer': siteEngineer,
@@ -105,9 +107,8 @@ class Report {
       contactName: map['contactName'],
       email: map['email'],
       phoneNo: map['phoneNo'],
-      survey: map['survey'],
-      dateSurveyCarriedOut:
-          DateTime.fromMillisecondsSinceEpoch(map['dateSurveyCarriedOut']),
+      siteEngineerphoneNo: map['siteEngineerphoneNo'],
+      dateSurveyCarriedOut: DateTime.fromMillisecondsSinceEpoch(map['dateSurveyCarriedOut']),
       accompainedBy: map['accompainedBy'],
       siteEngineer: map['siteEngineer'],
       siteEngineerEmail: map['siteEngineerEmail'],
@@ -122,47 +123,47 @@ class Report {
 
   @override
   String toString() {
-    return 'Report(client: $client, site: $site, building: $building, customerReferenceNo: $customerReferenceNo, carriedoutonbehalfof: $carriedoutonbehalfof, contactName: $contactName, email: $email, phoneNo: $phoneNo, survey: $survey, dateSurveyCarriedOut: $dateSurveyCarriedOut, accompainedBy: $accompainedBy, siteEngineer: $siteEngineer, siteEngineerEmail: $siteEngineerEmail, testMeter: $testMeter, meters: $meters)';
+    return 'Report(client: $client, site: $site, building: $building, customerReferenceNo: $customerReferenceNo, carriedoutonbehalfof: $carriedoutonbehalfof, contactName: $contactName, email: $email, phoneNo: $phoneNo, siteEngineerphoneNo: $siteEngineerphoneNo, dateSurveyCarriedOut: $dateSurveyCarriedOut, accompainedBy: $accompainedBy, siteEngineer: $siteEngineer, siteEngineerEmail: $siteEngineerEmail, testMeter: $testMeter, meters: $meters)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is Report &&
-        other.client == client &&
-        other.site == site &&
-        other.building == building &&
-        other.customerReferenceNo == customerReferenceNo &&
-        other.carriedoutonbehalfof == carriedoutonbehalfof &&
-        other.contactName == contactName &&
-        other.email == email &&
-        other.phoneNo == phoneNo &&
-        other.survey == survey &&
-        other.dateSurveyCarriedOut == dateSurveyCarriedOut &&
-        other.accompainedBy == accompainedBy &&
-        other.siteEngineer == siteEngineer &&
-        other.siteEngineerEmail == siteEngineerEmail &&
-        other.testMeter == testMeter &&
-        listEquals(other.meters, meters);
+      other.client == client &&
+      other.site == site &&
+      other.building == building &&
+      other.customerReferenceNo == customerReferenceNo &&
+      other.carriedoutonbehalfof == carriedoutonbehalfof &&
+      other.contactName == contactName &&
+      other.email == email &&
+      other.phoneNo == phoneNo &&
+      other.siteEngineerphoneNo == siteEngineerphoneNo &&
+      other.dateSurveyCarriedOut == dateSurveyCarriedOut &&
+      other.accompainedBy == accompainedBy &&
+      other.siteEngineer == siteEngineer &&
+      other.siteEngineerEmail == siteEngineerEmail &&
+      other.testMeter == testMeter &&
+      listEquals(other.meters, meters);
   }
 
   @override
   int get hashCode {
     return client.hashCode ^
-        site.hashCode ^
-        building.hashCode ^
-        customerReferenceNo.hashCode ^
-        carriedoutonbehalfof.hashCode ^
-        contactName.hashCode ^
-        email.hashCode ^
-        phoneNo.hashCode ^
-        survey.hashCode ^
-        dateSurveyCarriedOut.hashCode ^
-        accompainedBy.hashCode ^
-        siteEngineer.hashCode ^
-        siteEngineerEmail.hashCode ^
-        testMeter.hashCode ^
-        meters.hashCode;
+      site.hashCode ^
+      building.hashCode ^
+      customerReferenceNo.hashCode ^
+      carriedoutonbehalfof.hashCode ^
+      contactName.hashCode ^
+      email.hashCode ^
+      phoneNo.hashCode ^
+      siteEngineerphoneNo.hashCode ^
+      dateSurveyCarriedOut.hashCode ^
+      accompainedBy.hashCode ^
+      siteEngineer.hashCode ^
+      siteEngineerEmail.hashCode ^
+      testMeter.hashCode ^
+      meters.hashCode;
   }
 }
