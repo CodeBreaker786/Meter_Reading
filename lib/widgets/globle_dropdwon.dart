@@ -24,6 +24,7 @@ class GlobalDropdwon extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: TypeAheadFormField(
           textFieldConfiguration: TextFieldConfiguration(
+              onEditingComplete: () => FocusScope.of(context).nextFocus(),
               controller: textEditingController,
               cursorColor: Colors.white70,
               style: TextStyle(color: Colors.white, fontSize: 18),
@@ -58,7 +59,10 @@ class GlobalDropdwon extends StatelessWidget {
             List list = await getItemList({pattern});
             return list;
           },
-          onSuggestionSelected: onChanged),
+          onSuggestionSelected: (value) async {
+            await onChanged(value);
+            FocusScope.of(context).nextFocus();
+          }),
     );
   }
 }

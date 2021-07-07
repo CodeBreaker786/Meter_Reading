@@ -24,6 +24,7 @@ class GlobalTextField extends StatelessWidget {
         cursorColor: Colors.white54,
         cursorRadius: Radius.circular(5),
         style: TextStyle(color: Colors.white, fontSize: 18),
+        onEditingComplete: () => FocusScope.of(context).nextFocus(),
         decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),

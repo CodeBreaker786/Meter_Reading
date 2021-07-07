@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
           stream: getReports(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
+              reports.clear();
               snapshot.data.docs.forEach(
                   (report) => reports.add(Report.fromMap(report.data())));
               return PageView.builder(

@@ -24,7 +24,8 @@ class _AddMeterPageState extends State<AddMeterPage>
   TextEditingController _editingControllerMeterRead = TextEditingController();
   TextEditingController _editingControllerParentMeter = TextEditingController();
   TextEditingController _editingControllerMeterModel = TextEditingController();
-  TextEditingController _editingControllerMeterType = TextEditingController();
+  TextEditingController _editingControllerMeterType =
+      TextEditingController(text: 'Sub Meter');
   TextEditingController _editingControllerManufacturer =
       TextEditingController();
   TextEditingController _editingControllerFloor = TextEditingController();
@@ -71,6 +72,7 @@ class _AddMeterPageState extends State<AddMeterPage>
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
