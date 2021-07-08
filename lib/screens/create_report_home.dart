@@ -468,9 +468,10 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                             ),
                                             foregroundColor: Colors.white,
                                           ),
-                                          title: Text('Tile no $index'),
+                                          title: Text(
+                                              meters[index].supplyReference),
                                           subtitle:
-                                              Text('SlidableDrawerDelegate'),
+                                              Text(meters[index].supplyNumber),
                                         ),
                                       ),
                                       actions: <Widget>[

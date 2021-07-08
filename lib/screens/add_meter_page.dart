@@ -4,6 +4,7 @@ import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/widgets/flush_bar.dart';
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
+import 'package:metr_reading/widgets/toggle_button.dart';
 
 class AddMeterPage extends StatefulWidget {
   AddMeterPage({Key key}) : super(key: key);
@@ -256,6 +257,7 @@ class _AddMeterPageState extends State<AddMeterPage>
                                       Duration(seconds: 0), () {});
                                   return [
                                     'kWh',
+                                    'MWh',
                                     'Litres',
                                     'M3',
                                   ];
@@ -380,23 +382,19 @@ class _AddMeterPageState extends State<AddMeterPage>
                               horizontal: 18, vertical: 12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
                                 'MID Enable ',
                                 style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.lightGreen[600],
-                                ),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.lightGreen[600]),
                               ),
-                              Switch(
-                                activeColor: Colors.green,
-                                onChanged: (value) async {
-                                  setState(() {
-                                    mID = value;
-                                  });
+                              toggleButton(
+                                function: (value) {
+                                  mID = value;
                                 },
-                                value: mID,
                               )
                             ],
                           ),
@@ -416,81 +414,72 @@ class _AddMeterPageState extends State<AddMeterPage>
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                              ),
+                                  horizontal: 18, vertical: 12),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
                                     'AMR Enable ',
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.lightGreen[600],
                                     ),
                                   ),
-                                  Switch(
-                                    activeColor: Colors.green,
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        aMR = value;
-                                      });
+                                  toggleButton(
+                                    function: (value) {
+                                      aMR = value;
                                     },
-                                    value: aMR,
                                   )
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                              ),
+                                  horizontal: 18, vertical: 12),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
                                     'On Network',
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.lightGreen[600],
                                     ),
                                   ),
-                                  Switch(
-                                    activeColor: Colors.green,
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        onNetwork = value;
-                                      });
+                                  toggleButton(
+                                    function: (value) {
+                                      onNetwork = value;
                                     },
-                                    value: onNetwork,
                                   )
                                 ],
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                              ),
+                                  horizontal: 18, vertical: 12),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
                                     'On Buss',
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.lightGreen[600],
                                     ),
                                   ),
-                                  Switch(
-                                    activeColor: Colors.green,
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        onBuss = value;
-                                      });
+                                  toggleButton(
+                                    function: (value) {
+                                      onBuss = value;
                                     },
-                                    value: onBuss,
                                   )
                                 ],
                               ),
@@ -516,27 +505,27 @@ class _AddMeterPageState extends State<AddMeterPage>
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                              ),
+                                  horizontal: 18, vertical: 12),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    'Pulse Lead Required',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.lightGreen[600],
+                                  Flexible(
+                                    child: Text(
+                                      'Pulse Lead Required',
+                                      overflow: TextOverflow.clip,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.lightGreen[600],
+                                      ),
                                     ),
                                   ),
-                                  Switch(
-                                    activeColor: Colors.green,
-                                    onChanged: (value) async {
-                                      setState(() {
-                                        pluseLeadRequired = value;
-                                      });
+                                  toggleButton(
+                                    function: (value) {
+                                      pluseLeadRequired = value;
                                     },
-                                    value: pluseLeadRequired,
                                   )
                                 ],
                               ),
@@ -556,87 +545,83 @@ class _AddMeterPageState extends State<AddMeterPage>
                           isExpanded: _cardList[3],
                           body: Column(
                             children: [
-                              GlobalTextField(
-                                hintText: 'Pulse',
-                                controller: _editingControllerElectricPluse,
-                              ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 18,
-                                ),
+                                    horizontal: 18, vertical: 12),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'Voltage L1 & L2 & L3 Ok ?',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.lightGreen[600],
+                                    Flexible(
+                                      child: Text(
+                                        'Voltage L1 & L2 & L3 Ok ?',
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.lightGreen[600],
+                                        ),
                                       ),
                                     ),
-                                    Switch(
-                                      activeColor: Colors.green,
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          voltageL1L2L3 = value;
-                                        });
+                                    toggleButton(
+                                      function: (value) {
+                                        voltageL1L2L3 = value;
                                       },
-                                      value: voltageL1L2L3,
                                     )
                                   ],
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 18,
-                                ),
+                                    horizontal: 18, vertical: 12),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'CT Phase Orientation Ok',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.lightGreen[600],
+                                    Flexible(
+                                      child: Text(
+                                        'CT Phase Orientation Ok',
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.lightGreen[600],
+                                        ),
                                       ),
                                     ),
-                                    Switch(
-                                      activeColor: Colors.green,
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          cTPhaseOrientationOk = value;
-                                        });
+                                    toggleButton(
+                                      function: (value) {
+                                        cTPhaseOrientationOk = value;
                                       },
-                                      value: cTPhaseOrientationOk,
                                     )
                                   ],
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 18,
-                                ),
+                                    horizontal: 18, vertical: 12),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'Current Tested Ok?',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.lightGreen[600],
+                                    Flexible(
+                                      child: Text(
+                                        'Current Tested Ok?',
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.lightGreen[600],
+                                        ),
                                       ),
                                     ),
-                                    Switch(
-                                      activeColor: Colors.green,
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          currentTestedOk = value;
-                                        });
+                                    toggleButton(
+                                      function: (value) {
+                                        currentTestedOk = value;
                                       },
-                                      value: currentTestedOk,
                                     )
                                   ],
                                 ),

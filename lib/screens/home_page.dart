@@ -99,10 +99,12 @@ class _HomePageState extends State<HomePage> {
                               info: reports[index].carriedoutonbehalfof,
                             ),
                             ExpansionTile(
+                              backgroundColor: Colors.green.withOpacity(.4),
+                              iconColor: Colors.green,
                               tilePadding: EdgeInsets.symmetric(horizontal: 8),
                               title: Text("Test Meter Used",
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.bold)),
                               children: [
                                 buildInfoRow(
@@ -162,9 +164,13 @@ class _HomePageState extends State<HomePage> {
                                 )
                               ],
                             ),
-                            buildInfoRow(
-                              title: 'Meters',
-                              info: '',
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8, bottom: 8),
+                              child: Text("Meters",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             Expanded(
                               child: reports[index].meters.length != 0
