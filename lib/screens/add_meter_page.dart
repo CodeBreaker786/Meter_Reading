@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:metr_reading/models/meter.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
+import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/widgets/flush_bar.dart';
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
@@ -272,22 +274,35 @@ class _AddMeterPageState extends State<AddMeterPage>
                                   });
                                 },
                                 getItemList: (searchText) async {
-                                  await Future.delayed(
-                                      Duration(seconds: 2), () {});
-                                  return [
-                                    'Parent Meter',
-                                    'Parent Meter',
-                                    'Parent Meter',
-                                    'Parent Meter'
-                                  ];
+                                  DocumentSnapshot supplyName = await firestore
+                                      .collection('app_data')
+                                      .doc('supplyName')
+                                      .get();
+
+                                  List list = List<String>.from(
+                                      supplyName.data()['list']);
+
+                                  return list.toList();
                                 }),
                             GlobalDropdwon(
                               hintText: 'Manufacturer',
                               textEditingController:
                                   _editingControllerManufacturer,
-                              onChanged: (value) {},
+                              onChanged: (value) async {
+                                setState(() {
+                                  _editingControllerManufacturer.text = value;
+                                });
+                              },
                               getItemList: (searchText) async {
-                                return [searchText.toString()];
+                                DocumentSnapshot manufacturer = await firestore
+                                    .collection('app_data')
+                                    .doc('manufacturer')
+                                    .get();
+
+                                List list = List<String>.from(
+                                    manufacturer.data()['list']);
+
+                                return list.toList();
                               },
                               validator: (String text) {
                                 if (text == null || text.isEmpty) {
@@ -301,16 +316,21 @@ class _AddMeterPageState extends State<AddMeterPage>
                               hintText: 'Meter Model',
                               textEditingController:
                                   _editingControllerMeterModel,
-                              onChanged: (value) {},
+                              onChanged: (value) {
+                                setState(() {
+                                  _editingControllerMeterModel.text = value;
+                                });
+                              },
                               getItemList: (searchText) async {
-                                await Future.delayed(
-                                    Duration(seconds: 1), () {});
-                                return [
-                                  'Parent Meter',
-                                  'Parent Meter',
-                                  'Parent Meter',
-                                  'Parent Meter'
-                                ];
+                                DocumentSnapshot meterModel = await firestore
+                                    .collection('app_data')
+                                    .doc('meterModel')
+                                    .get();
+
+                                List list = List<String>.from(
+                                    meterModel.data()['list']);
+
+                                return list.toList();
                               },
                               validator: (String text) {
                                 if (text == null || text.isEmpty) {

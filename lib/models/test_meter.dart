@@ -11,7 +11,7 @@ class TestMeter {
      this.meterMake,
      this.meterModel,
      this.serialNumber,
-     this.attachCertificate,
+     this.attachCertificate, attachCalibrationCertificate,
   });
 
   TestMeter copyWith({

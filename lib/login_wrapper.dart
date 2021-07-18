@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:metr_reading/screens/landing_page.dart';
  
 import 'package:metr_reading/screens/loginpagescreen.dart';
 
-import 'screens/home_page.dart';
+
 
 class LoginWrapper extends StatefulWidget {
   const LoginWrapper({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class _LoginWrapperState extends State<LoginWrapper> {
         print(snapshot.data);
         if (snapshot.connectionState == ConnectionState.active &&
             snapshot.data != null) {
-          return HomePage();
+          return LandingPage();
         } else if (snapshot.connectionState == ConnectionState.active &&
             snapshot.data == null) {
           return LoginPage();

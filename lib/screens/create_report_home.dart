@@ -60,7 +60,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
   final df = DateFormat('dd-MM-yyyy');
   DateTime dateTime;
   String fileSize = '';
-
+  String fileURL;
   @override
   void initState() {
     _editingControllerDateSurveyCarriedOut.text = df.format(DateTime.now());
@@ -541,8 +541,10 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                   if (_formKey.currentState.validate()) {
                                     BlocProvider.of<GlobalBloc>(context)
                                         .add(ShowLoadingIndicator());
-                                    String fileURL = await uploadFile(
-                                        attachCalibrationCertificate);
+                                    if (attachCalibrationCertificate != null) {
+                                      String fileURL = await uploadFile(
+                                          attachCalibrationCertificate);
+                                    }
 
                                     report = Report(
                                         site: _editingControllerSite.text,
@@ -579,10 +581,10 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                                 .toString(),
                                             meterType: _editingControllerMeter.text
                                                 .toString(),
-                                            attachCertificate: fileURL,
+                                            attachCalibrationCertificate:
+                                                fileURL,
                                             serialNumber:
-                                                _editingControllerSerialNo.text
-                                                    .toString()));
+                                                _editingControllerSerialNo.text.toString()));
 
                                     bool isSuccess = await uploadReport(report);
                                     if (isSuccess) {

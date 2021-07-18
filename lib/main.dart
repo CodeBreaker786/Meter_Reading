@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metr_reading/global/bloc/global_bloc.dart';
 import 'package:metr_reading/login_wrapper.dart';
+import 'package:metr_reading/screens/landing_page.dart';
 
 import 'package:metr_reading/screens/loginpagescreen.dart';
-import 'package:metr_reading/screens/home_page.dart';
+ 
 
 void main() async {
   
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         initialRoute: '/wraper',
         routes: {
           '/wraper': (context) => LoginWrapper(),
-          '/home': (context) => HomePage(),
+          '/home': (context) => LandingPage(),
           '/loginpage': (context) => LoginPage(),
           
           

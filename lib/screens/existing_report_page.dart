@@ -11,12 +11,12 @@ import 'package:metr_reading/utils/const.dart';
 import 'package:metr_reading/widgets/flush_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomePage extends StatefulWidget {
+class ExistigPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _ExistigPageState createState() => _ExistigPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ExistigPageState extends State<ExistigPage> {
   final ScrollController _scrollController = ScrollController();
   int repoIndex = 0;
   List<Report> reports = [];
@@ -309,21 +309,23 @@ class _HomePageState extends State<HomePage> {
               child: Icon(Icons.view_quilt, color: Colors.white),
               backgroundColor: Colors.green,
               onTap: () async {
-                if (reports.length != 0) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ReportViwer(
-                        report: reports[repoIndex],
-                      ),
-                    ),
-                  );
-                } else {
-                  await buildFlushBar(
-                      buildContext: context,
-                      title: "There is no report Founf",
-                      subtitle: "Plaese slect report first",
-                      isError: true);
-                }
+                bool isSuccess = await uploadReport(reports[repoIndex]);
+                print(isSuccess);
+                // if (reports.length != 0) {
+                //   Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //       builder: (_) => ReportViwer(
+                //         report: reports[repoIndex],
+                //       ),
+                //     ),
+                //   );
+                // } else {
+                //   await buildFlushBar(
+                //       buildContext: context,
+                //       title: "There is no report Founf",
+                //       subtitle: "Plaese slect report first",
+                //       isError: true);
+                // }
               },
               label: 'View Report',
               labelStyle:
