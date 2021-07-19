@@ -1,12 +1,19 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:metr_reading/models/meter.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/services/could_firebase.dart';
+import 'package:metr_reading/utils/get_file_size.dart';
 import 'package:metr_reading/widgets/flush_bar.dart';
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
 import 'package:metr_reading/widgets/toggle_button.dart';
+import 'package:path/path.dart' as Path;
 
 class AddMeterPage extends StatefulWidget {
   AddMeterPage({Key key}) : super(key: key);
@@ -58,6 +65,8 @@ class _AddMeterPageState extends State<AddMeterPage>
   TextEditingController _editingControllerVolumeOnMeter =
       TextEditingController();
   TextEditingController _editingControllerVolumeOnBMS = TextEditingController();
+  File attachImage;
+  String fileSize = '';
 
   bool mID = false;
   bool aMR = false;
@@ -489,7 +498,7 @@ class _AddMeterPageState extends State<AddMeterPage>
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'On Buss',
+                                    'On BMS',
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -543,6 +552,7 @@ class _AddMeterPageState extends State<AddMeterPage>
                                     ),
                                   ),
                                   toggleButton(
+                                    value: pluseLeadRequired,
                                     function: (value) {
                                       pluseLeadRequired = value;
                                     },
@@ -686,24 +696,74 @@ class _AddMeterPageState extends State<AddMeterPage>
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Icon(
-                                    Icons.upload_file,
-                                    color: Colors.green,
-                                    size: 35,
-                                  ),
-                                  Text(
-                                    "Add Thermal Image ",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.lightGreen[600],
+                              child: attachImage == null
+                                  ? InkWell(
+                                      onTap: () async {
+                                        final XFile photo = await ImagePicker()
+                                            .pickImage(
+                                                source: ImageSource.camera);
+                                        // FilePickerResult result =
+                                        //     await FilePicker.platform
+                                        //         .pickFiles();
+                                        // if (result != null) {
+                                        //   attachImage = await File(
+                                        //           result.files.single.path)
+                                        //       .create();
+                                        //   fileSize = await getFileSize(
+                                        //       attachImage.path, 1);
+                                        //   setState(() {});
+                                        // } else {}
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                              icon: Icon(
+                                                MaterialIcons.file_upload,
+                                                size: 40,
+                                                color: Colors.lightGreen[600],
+                                              ),
+                                              onPressed: null),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 15),
+                                            child: Text(
+                                              'Add thermal image',
+                                              style: TextStyle(
+                                                color: Colors.lightGreen[600],
+                                                fontSize: 18,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  : ListTile(
+                                      title: Text(
+                                        Path.basename(attachImage.path)
+                                            .toString(),
+                                        style: TextStyle(
+                                          color: Colors.lightGreen[600],
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      subtitle: Text(fileSize),
+                                      trailing: InkWell(
+                                          onTap: () async {
+                                            await File(attachImage.path)
+                                                .delete();
+                                            attachImage = null;
+                                            setState(() {});
+                                          },
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Colors.red,
+                                          )),
                                     ),
-                                  )
-                                ],
-                              ),
                             ),
                             GlobalTextField(
                               hintText: 'Add Thermal Image No',

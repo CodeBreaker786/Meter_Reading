@@ -105,7 +105,7 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                 padding: EdgeInsets.symmetric(
                                     vertical: 10, horizontal: 14),
                                 child: Text(
-                                  'Cient Details',
+                                  'Client Details',
                                   style: buildTileTitleStyle(),
                                 ),
                               ),
