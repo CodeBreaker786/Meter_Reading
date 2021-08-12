@@ -1,19 +1,23 @@
 import 'dart:io';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'package:metr_reading/models/meter.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/get_file_size.dart';
-import 'package:metr_reading/widgets/flush_bar.dart';
+
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
+import 'package:metr_reading/widgets/loading_utils.dart';
 import 'package:metr_reading/widgets/toggle_button.dart';
 import 'package:path/path.dart' as Path;
+import 'package:path_provider/path_provider.dart';
 
 class AddMeterPage extends StatefulWidget {
   AddMeterPage({Key key}) : super(key: key);
@@ -140,11 +144,9 @@ class _AddMeterPageState extends State<AddMeterPage>
                   );
                   Navigator.pop(context, meter);
                 } else {
-                  buildFlushBar(
-                    buildContext: context,
-                    title: "Incomplete Information",
-                    subtitle: "Please enter the data which is required",
-                  );
+                  showError(
+                      error:
+                          'Incomplete Information\nPlease enter the data which is required');
                 }
               },
               child: Padding(
@@ -699,20 +701,24 @@ class _AddMeterPageState extends State<AddMeterPage>
                               child: attachImage == null
                                   ? InkWell(
                                       onTap: () async {
-                                        final XFile photo = await ImagePicker()
+                                     
+
+                                        final XFile image = await ImagePicker()
                                             .pickImage(
                                                 source: ImageSource.camera);
+
+                                        if (image == null) return;
+
                                         // FilePickerResult result =
                                         //     await FilePicker.platform
                                         //         .pickFiles();
-                                        // if (result != null) {
-                                        //   attachImage = await File(
-                                        //           result.files.single.path)
-                                        //       .create();
-                                        //   fileSize = await getFileSize(
-                                        //       attachImage.path, 1);
-                                        //   setState(() {});
-                                        // } else {}
+                                        if (image != null) {
+                                          attachImage =
+                                              await File(image.path).create();
+                                          fileSize = await getFileSize(
+                                              attachImage.path, 1);
+                                          setState(() {});
+                                        } else {}
                                       },
                                       child: Row(
                                         mainAxisAlignment:

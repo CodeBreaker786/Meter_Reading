@@ -62,10 +62,10 @@ class _LandingPageState extends State<LandingPage> {
                         style:
                             TextStyle(fontSize: 16, color: Colors.grey[300])),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => ExistigPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ExistigPage()));
                     },
                   ),
                 ),

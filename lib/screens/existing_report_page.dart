@@ -8,7 +8,7 @@ import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/screens/report_viwer.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/const.dart';
-import 'package:metr_reading/widgets/flush_bar.dart';
+import 'package:metr_reading/widgets/loading_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExistigPage extends StatefulWidget {
@@ -43,6 +43,7 @@ class _ExistigPageState extends State<ExistigPage> {
             ),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
+              Navigator.popUntil(context, (route) => route.isFirst);
             },
           )
         ],
@@ -148,14 +149,9 @@ class _ExistigPageState extends State<ExistigPage> {
                                                 ? await launch(reports[index]
                                                     .testMeter
                                                     .attachCertificate)
-                                                : await buildFlushBar(
-                                                    buildContext: context,
-                                                    title:
-                                                        "Could not launch url",
-                                                    subtitle: reports[index]
-                                                        .testMeter
-                                                        .attachCertificate,
-                                                    isError: true);
+                                                : showError(
+                                                    error:
+                                                        "Could not launch url");
                                           },
                                         ),
                                       )
@@ -201,8 +197,9 @@ class _ExistigPageState extends State<ExistigPage> {
                                                   ),
                                                   foregroundColor: Colors.white,
                                                 ),
-                                                title:
-                                                    Text(reports[index].client),
+                                                title: Text(reports[index]
+                                                    .client
+                                                    .toString()),
                                                 subtitle:
                                                     Text(reports[index].site),
                                               ),
@@ -282,7 +279,8 @@ class _ExistigPageState extends State<ExistigPage> {
           curve: Curves.bounceInOut,
           children: [
             SpeedDialChild(
-              child: Icon(Icons.open_in_new, color: Colors.white),
+              child:
+                  Icon(Icons.create_new_folder_outlined, color: Colors.white),
               backgroundColor: Colors.green,
               onTap: () {
                 Navigator.of(context).push(
@@ -291,13 +289,13 @@ class _ExistigPageState extends State<ExistigPage> {
                   ),
                 );
               },
-              label: 'Add New Meter',
+              label: 'Create New Report',
               labelStyle:
                   TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
               labelBackgroundColor: Colors.lightGreen[600],
             ),
             SpeedDialChild(
-              child: Icon(Icons.edit, color: Colors.white),
+              child: Icon(Icons.create_outlined, color: Colors.white),
               backgroundColor: Colors.green,
               onTap: () {},
               label: 'Edit Report',
@@ -306,26 +304,22 @@ class _ExistigPageState extends State<ExistigPage> {
               labelBackgroundColor: Colors.lightGreen[600],
             ),
             SpeedDialChild(
-              child: Icon(Icons.view_quilt, color: Colors.white),
+              child: Icon(Icons.view_carousel_outlined, color: Colors.white),
               backgroundColor: Colors.green,
               onTap: () async {
-                bool isSuccess = await uploadReport(reports[repoIndex]);
-                print(isSuccess);
-                // if (reports.length != 0) {
-                //   Navigator.of(context).push(
-                //     MaterialPageRoute(
-                //       builder: (_) => ReportViwer(
-                //         report: reports[repoIndex],
-                //       ),
-                //     ),
-                //   );
-                // } else {
-                //   await buildFlushBar(
-                //       buildContext: context,
-                //       title: "There is no report Founf",
-                //       subtitle: "Plaese slect report first",
-                //       isError: true);
-                // }
+                if (reports.length != 0) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ReportViwer(
+                        report: reports[repoIndex],
+                      ),
+                    ),
+                  );
+                } else {
+                  showError(
+                      error:
+                          "There is no report Found\nPlaese slect report first");
+                }
               },
               label: 'View Report',
               labelStyle:
