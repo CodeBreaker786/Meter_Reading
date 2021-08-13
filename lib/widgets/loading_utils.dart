@@ -16,6 +16,23 @@ void showLoaging({String message}) {
       status: message ?? 'Loading...', maskType: EasyLoadingMaskType.custom);
 }
 
+void showLoagingWithProgress({String message, double progress}) {
+  // EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.cubeGrid;
+
+  EasyLoading.instance
+    ..backgroundColor = lightGreen
+    ..indicatorColor = Colors.amber
+    ..radius = 12
+    ..loadingStyle = EasyLoadingStyle.custom
+    ..indicatorSize = 45.0
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..textColor = Colors.white
+    ..progressColor = Colors.amber
+    ..maskColor = lightGreen.withOpacity(.8);
+  EasyLoading.showProgress(.4,
+      status: message ?? 'Loading...', maskType: EasyLoadingMaskType.custom);
+}
+
 void showSuccess({String message}) {
   EasyLoading.instance.loadingStyle = EasyLoadingStyle.custom;
   EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.cubeGrid;

@@ -15,7 +15,6 @@ exports.onUserCreated = functions.firestore
             await admin.firestore().collection('app_data').doc('meterModel').set({ list: admin.firestore.FieldValue.arrayUnion(element.meterModel) }, { merge: true });
             await admin.firestore().collection('app_data').doc('manufacturer').set({ list: admin.firestore.FieldValue.arrayUnion(element.manufacturer) }, { merge: true });
              
-
         });
 
 

@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:metr_reading/services/upload_pdf.dart';
 import 'package:metr_reading/widgets/loading_utils.dart';
 import 'package:path/path.dart' as Path;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -15,7 +17,6 @@ import 'package:metr_reading/models/test_meter.dart';
 import 'package:metr_reading/screens/add_meter_page.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/get_file_size.dart';
-import 'package:metr_reading/utils/upload_file.dart';
 
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
@@ -517,12 +518,6 @@ class _CreateReportPageState extends State<CreateReportPage> {
                       onTap: () async {
                         await Future.delayed(Duration(milliseconds: 100));
                         if (_formKey.currentState.validate()) {
-                          showLoaging(message: 'report Uploading');
-                          if (attachCalibrationCertificate != null) {
-                            String fileURL =
-                                await uploadFile(attachCalibrationCertificate);
-                          }
-
                           report = Report(
                               site: _editingControllerSite.text,
                               client: _editingControllerClient.text,
@@ -550,12 +545,17 @@ class _CreateReportPageState extends State<CreateReportPage> {
                                       _editingControllerModel.text.toString(),
                                   meterType:
                                       _editingControllerMeter.text.toString(),
-                                  attachCalibrationCertificate: fileURL,
+                                  attachCertificate:
+                                      attachCalibrationCertificate != null
+                                          ? await uploadFileToStorage(
+                                              attachCalibrationCertificate)
+                                          : null,
                                   serialNumber: _editingControllerSerialNo.text
                                       .toString()));
-
+                          showLoaging(message: "Uploading Report");
                           bool isSuccess = await uploadReport(report);
                           if (isSuccess) {
+                            await EasyLoading.dismiss();
                             Navigator.pop(context);
                           } else {
                             showError(

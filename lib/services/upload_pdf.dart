@@ -1,23 +1,43 @@
 import 'dart:io';
+import 'package:path/path.dart' as Path;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:metr_reading/widgets/loading_utils.dart';
 
-import 'package:firebase_storage/firebase_storage.dart';
-
-Future<String> uploadPdfToStorage(File pdfFile) async {
+Future<String> uploadFileToStorage(File file) async {
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   try {
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child('pdfs/${DateTime.now().millisecondsSinceEpoch}');
-    UploadTask uploadTask =
-        ref.putFile(pdfFile, SettableMetadata(contentType: 'pdf'));
+    firebase_storage.Reference ref =
+        storage.ref().child(Path.basename(file.path).toString());
+    firebase_storage.UploadTask uploadTask = ref.putFile(
+      file,
+    );
 
-    TaskSnapshot snapshot = await uploadTask;
+    uploadTask.snapshotEvents.listen((firebase_storage.TaskSnapshot snapshot) {
+      print(snapshot.bytesTransferred / snapshot.totalBytes);
+      showLoagingWithProgress(
+          message: "Uploading File",
+          progress: snapshot.bytesTransferred / snapshot.totalBytes);
+      if ((snapshot.bytesTransferred / snapshot.totalBytes) >= 1) {
+        EasyLoading.dismiss();
+      }
+    }, onError: (e) async {
+      if (e.code == 'permission-denied') {
+        showError(
+            error:
+                'User does not have permission to upload to this reference.');
+       
+      }
+      showError(error: e.toString());
+       
+    });
 
-    String url = await snapshot.ref.getDownloadURL();
-
-    print("url:$url");
+    String url = await ref.getDownloadURL();
+    await EasyLoading.dismiss();
     return url;
   } catch (e) {
-    print(e.toString());
+    showError(error: e.toString());
     return null;
   }
 }

@@ -7,11 +7,12 @@ class TestMeter {
   String serialNumber;
   String attachCertificate;
   TestMeter({
-     this.meterType,
-     this.meterMake,
-     this.meterModel,
-     this.serialNumber,
-     this.attachCertificate, attachCalibrationCertificate,
+    this.meterType,
+    this.meterMake,
+    this.meterModel,
+    this.serialNumber,
+    this.attachCertificate,
+    attachCalibrationCertificate,
   });
 
   TestMeter copyWith({
@@ -52,7 +53,8 @@ class TestMeter {
 
   String toJson() => json.encode(toMap());
 
-  factory TestMeter.fromJson(String source) => TestMeter.fromMap(json.decode(source));
+  factory TestMeter.fromJson(String source) =>
+      TestMeter.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -62,21 +64,21 @@ class TestMeter {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is TestMeter &&
-      other.meterType == meterType &&
-      other.meterMake == meterMake &&
-      other.meterModel == meterModel &&
-      other.serialNumber == serialNumber &&
-      other.attachCertificate == attachCertificate;
+        other.meterType == meterType &&
+        other.meterMake == meterMake &&
+        other.meterModel == meterModel &&
+        other.serialNumber == serialNumber &&
+        other.attachCertificate == attachCertificate;
   }
 
   @override
   int get hashCode {
     return meterType.hashCode ^
-      meterMake.hashCode ^
-      meterModel.hashCode ^
-      serialNumber.hashCode ^
-      attachCertificate.hashCode;
+        meterMake.hashCode ^
+        meterModel.hashCode ^
+        serialNumber.hashCode ^
+        attachCertificate.hashCode;
   }
 }

@@ -178,7 +178,6 @@ class _ExistigPageState extends State<ExistigPage> {
                                         scrollDirection: Axis.vertical,
                                         itemCount: reports[index].meters.length,
                                         itemBuilder: (context, index) {
-                                          repoIndex = index;
                                           return Slidable(
                                             actionPane:
                                                 SlidableDrawerActionPane(),
@@ -197,11 +196,13 @@ class _ExistigPageState extends State<ExistigPage> {
                                                   ),
                                                   foregroundColor: Colors.white,
                                                 ),
-                                                title: Text(reports[index]
-                                                    .client
-                                                    .toString()),
-                                                subtitle:
-                                                    Text(reports[index].site),
+                                                title: Text(reports[repoIndex]
+                                                    .meters[index]
+                                                    .supplyName),
+                                                subtitle: Text(
+                                                    reports[repoIndex]
+                                                        .meters[index]
+                                                        .supplyNumber),
                                               ),
                                             ),
                                             actions: <Widget>[

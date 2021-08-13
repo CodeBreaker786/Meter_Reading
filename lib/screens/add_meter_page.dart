@@ -1,23 +1,23 @@
 import 'dart:io';
+import 'dart:math';
 
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:metr_reading/models/meter.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/services/could_firebase.dart';
-import 'package:metr_reading/utils/get_file_size.dart';
+import 'package:metr_reading/services/upload_pdf.dart';
 
 import 'package:metr_reading/widgets/globle_dropdwon.dart';
 import 'package:metr_reading/widgets/globle_textFiled.dart';
 import 'package:metr_reading/widgets/loading_utils.dart';
 import 'package:metr_reading/widgets/toggle_button.dart';
 import 'package:path/path.dart' as Path;
-import 'package:path_provider/path_provider.dart';
 
 class AddMeterPage extends StatefulWidget {
   AddMeterPage({Key key}) : super(key: key);
@@ -88,7 +88,7 @@ class _AddMeterPageState extends State<AddMeterPage>
 
   @override
   Widget build(BuildContext context) {
-    final node = FocusScope.of(context);
+    
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -104,44 +104,50 @@ class _AddMeterPageState extends State<AddMeterPage>
           ),
           actions: [
             InkWell(
-              onTap: () {
+              onTap: () async {
                 if (_formKey.currentState.validate()) {
+                  showLoaging(message: "Uploading..");
                   Meter meter = Meter(
-                    supplyNumber: _editingControllerSerialNumber.text,
-                    meterRead: _editingControllerMeterRead.text,
-                    supplyName: _editingControllerSupplyName.text,
-                    supplyReference: _editingControllerMeterRead.text,
-                    parentMeter: _editingControllerParentMeter.text,
-                    meterType: _editingControllerMeterType.text,
-                    meterModel: _editingControllerMeterModel.text,
-                    manufacturer: _editingControllerManufacturer.text,
-                    floor: _editingControllerFloor.text,
-                    demiseServed: _editingControllerDemiseServed.text,
-                    meter: _editingControllerMeter.text,
-                    location: _editingControllerLocation.text,
-                    mID: mID,
-                    aMR: aMR,
-                    onNetwork: onNetwork,
-                    onBuss: onBuss,
-                    commonProtocol: _editingControllerCommonProtocol.text,
-                    slaveID: _editingControllerSlaveID.text,
-                    pluseLeadRequuired: pluseLeadRequired,
-                    electricMeterPluse: _editingControllerElectricPluse.text,
-                    voltageL1L2L3Ok: voltageL1L2L3,
-                    ctPhaseOrientationOk: cTPhaseOrientationOk,
-                    currentTestedOk: currentTestedOk,
-                    ctRationOnMeter: _editingControllerCTRatioMeterOnMeter.text,
-                    breakerRating: _editingControllerBreakerRating.text,
-                    mainT1Temperature: _editingControllerMainT1Temperature.text,
-                    batteryT1Temperature:
-                        _editingControllerBetteryT1Temperature.text,
-                    thermalImageNo: _editingControllerThermalImageNo.text,
-                    kT12: _editingControllerKT1.text,
-                    kW: _editingControllerKW.text,
-                    flowRate: _editingControllerFlowRate.text,
-                    volumeOnMeter: _editingControllerVolumeOnMeter.text,
-                    volumeOnBMS: _editingControllerVolumeOnBMS.text,
-                  );
+                      supplyNumber: _editingControllerSerialNumber.text,
+                      meterRead: _editingControllerMeterRead.text,
+                      supplyName: _editingControllerSupplyName.text,
+                      supplyReference: _editingControllerMeterRead.text,
+                      parentMeter: _editingControllerParentMeter.text,
+                      meterType: _editingControllerMeterType.text,
+                      meterModel: _editingControllerMeterModel.text,
+                      manufacturer: _editingControllerManufacturer.text,
+                      floor: _editingControllerFloor.text,
+                      demiseServed: _editingControllerDemiseServed.text,
+                      meter: _editingControllerMeter.text,
+                      location: _editingControllerLocation.text,
+                      mID: mID,
+                      aMR: aMR,
+                      onNetwork: onNetwork,
+                      onBuss: onBuss,
+                      commonProtocol: _editingControllerCommonProtocol.text,
+                      slaveID: _editingControllerSlaveID.text,
+                      pluseLeadRequuired: pluseLeadRequired,
+                      electricMeterPluse: _editingControllerElectricPluse.text,
+                      voltageL1L2L3Ok: voltageL1L2L3,
+                      ctPhaseOrientationOk: cTPhaseOrientationOk,
+                      currentTestedOk: currentTestedOk,
+                      ctRationOnMeter:
+                          _editingControllerCTRatioMeterOnMeter.text,
+                      breakerRating: _editingControllerBreakerRating.text,
+                      mainT1Temperature:
+                          _editingControllerMainT1Temperature.text,
+                      batteryT1Temperature:
+                          _editingControllerBetteryT1Temperature.text,
+                      thermalImageNo: _editingControllerThermalImageNo.text,
+                      kT12: _editingControllerKT1.text,
+                      kW: _editingControllerKW.text,
+                      flowRate: _editingControllerFlowRate.text,
+                      volumeOnMeter: _editingControllerVolumeOnMeter.text,
+                      volumeOnBMS: _editingControllerVolumeOnBMS.text,
+                      thermalImageUrl: attachImage != null
+                          ? await uploadFileToStorage(attachImage)
+                          : null);
+                  await EasyLoading.dismiss();
                   Navigator.pop(context, meter);
                 } else {
                   showError(
@@ -290,8 +296,8 @@ class _AddMeterPageState extends State<AddMeterPage>
                                       .doc('supplyName')
                                       .get();
 
-                                  List list = List<String>.from(
-                                      supplyName.data()['list']);
+                                  List list =
+                                      List<String>.from(supplyName.data());
 
                                   return list.toList();
                                 }),
@@ -310,8 +316,8 @@ class _AddMeterPageState extends State<AddMeterPage>
                                     .doc('manufacturer')
                                     .get();
 
-                                List list = List<String>.from(
-                                    manufacturer.data()['list']);
+                                List list =
+                                    List<String>.from(manufacturer.data());
 
                                 return list.toList();
                               },
@@ -338,8 +344,8 @@ class _AddMeterPageState extends State<AddMeterPage>
                                     .doc('meterModel')
                                     .get();
 
-                                List list = List<String>.from(
-                                    meterModel.data()['list']);
+                                List list =
+                                    List<String>.from(meterModel.data());
 
                                 return list.toList();
                               },
@@ -701,24 +707,7 @@ class _AddMeterPageState extends State<AddMeterPage>
                               child: attachImage == null
                                   ? InkWell(
                                       onTap: () async {
-                                     
-
-                                        final XFile image = await ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.camera);
-
-                                        if (image == null) return;
-
-                                        // FilePickerResult result =
-                                        //     await FilePicker.platform
-                                        //         .pickFiles();
-                                        if (image != null) {
-                                          attachImage =
-                                              await File(image.path).create();
-                                          fileSize = await getFileSize(
-                                              attachImage.path, 1);
-                                          setState(() {});
-                                        } else {}
+                                        _showSelectionDialog(context);
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -832,4 +821,66 @@ class _AddMeterPageState extends State<AddMeterPage>
       ),
     );
   }
+
+  Future<void> _showSelectionDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text("From where do you want to take the photo?"),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text("Gallery"),
+                      onTap: () async {
+                        XFile file =
+                            await takePhoto(imageSource: ImageSource.gallery)
+                                .catchError((onError) {
+                          Navigator.pop(context);
+                          showError(error: 'Please Try Again');
+                        });
+
+                        Navigator.pop(context);
+                        if (file == null) {
+                          Navigator.pop(context);
+                          showError(error: 'Please Try Again');
+                          return null;
+                        }
+                        if (file != null) {
+                          attachImage = await File(file.path).create();
+
+                          setState(() {});
+                        }
+                      },
+                    ),
+                    Padding(padding: EdgeInsets.all(8.0)),
+                    ListTile(
+                      title: Text("Camera"),
+                      onTap: () async {
+                        XFile file =
+                            await takePhoto(imageSource: ImageSource.camera);
+                        Navigator.pop(context);
+                        if (file == null) {
+                          Navigator.pop(context);
+                          showError(error: 'Please Try Again');
+                          return null;
+                        }
+                        if (file != null) {
+                          attachImage = await File(file.path).create();
+                          setState(() {});
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ));
+        });
+  }
+}
+
+Future<XFile> takePhoto({@required ImageSource imageSource}) async {
+  final XFile image = await ImagePicker().pickImage(source: imageSource);
+
+  return image;
 }

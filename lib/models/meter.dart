@@ -1,7 +1,5 @@
 import 'dart:convert';
 
- 
-
 class Meter {
   String meter;
   String supplyReference;
@@ -31,13 +29,13 @@ class Meter {
   String mainT1Temperature;
   String batteryT1Temperature;
   String thermalImageNo;
+  String thermalImageUrl;
   String kT12;
   String kW;
   String flowRate;
   String volumeOnMeter;
   String volumeOnBMS;
   String note;
- 
   Meter({
     this.meter,
     this.supplyReference,
@@ -67,6 +65,7 @@ class Meter {
     this.mainT1Temperature,
     this.batteryT1Temperature,
     this.thermalImageNo,
+    this.thermalImageUrl,
     this.kT12,
     this.kW,
     this.flowRate,
@@ -104,6 +103,7 @@ class Meter {
     String mainT1Temperature,
     String batteryT1Temperature,
     String thermalImageNo,
+    String thermalImageUrl,
     String kT12,
     String kW,
     String flowRate,
@@ -140,6 +140,7 @@ class Meter {
       mainT1Temperature: mainT1Temperature ?? this.mainT1Temperature,
       batteryT1Temperature: batteryT1Temperature ?? this.batteryT1Temperature,
       thermalImageNo: thermalImageNo ?? this.thermalImageNo,
+      thermalImageUrl: thermalImageUrl ?? this.thermalImageUrl,
       kT12: kT12 ?? this.kT12,
       kW: kW ?? this.kW,
       flowRate: flowRate ?? this.flowRate,
@@ -179,6 +180,7 @@ class Meter {
       'mainT1Temperature': mainT1Temperature,
       'batteryT1Temperature': batteryT1Temperature,
       'thermalImageNo': thermalImageNo,
+      'thermalImageUrl': thermalImageUrl,
       'kT12': kT12,
       'kW': kW,
       'flowRate': flowRate,
@@ -218,6 +220,7 @@ class Meter {
       mainT1Temperature: map['mainT1Temperature'],
       batteryT1Temperature: map['batteryT1Temperature'],
       thermalImageNo: map['thermalImageNo'],
+      thermalImageUrl: map['thermalImageUrl'],
       kT12: map['kT12'],
       kW: map['kW'],
       flowRate: map['flowRate'],
@@ -233,7 +236,7 @@ class Meter {
 
   @override
   String toString() {
-    return 'Meter(meter: $meter, supplyReference: $supplyReference, supplyName: $supplyName, supplyNumber: $supplyNumber, meterType: $meterType, meterRead: $meterRead, parentMeter: $parentMeter, manufacturer: $manufacturer, meterModel: $meterModel, floor: $floor, demiseServed: $demiseServed, location: $location, mID: $mID, aMR: $aMR, onNetwork: $onNetwork, onBuss: $onBuss, commonProtocol: $commonProtocol, slaveID: $slaveID, pluseLeadRequuired: $pluseLeadRequuired, electricMeterPluse: $electricMeterPluse, voltageL1L2L3Ok: $voltageL1L2L3Ok, ctPhaseOrientationOk: $ctPhaseOrientationOk, currentTestedOk: $currentTestedOk, ctRationOnMeter: $ctRationOnMeter, breakerRating: $breakerRating, mainT1Temperature: $mainT1Temperature, batteryT1Temperature: $batteryT1Temperature, thermalImageNo: $thermalImageNo, kT12: $kT12, kW: $kW, flowRate: $flowRate, volumeOnMeter: $volumeOnMeter, volumeOnBMS: $volumeOnBMS, note: $note)';
+    return 'Meter(meter: $meter, supplyReference: $supplyReference, supplyName: $supplyName, supplyNumber: $supplyNumber, meterType: $meterType, meterRead: $meterRead, parentMeter: $parentMeter, manufacturer: $manufacturer, meterModel: $meterModel, floor: $floor, demiseServed: $demiseServed, location: $location, mID: $mID, aMR: $aMR, onNetwork: $onNetwork, onBuss: $onBuss, commonProtocol: $commonProtocol, slaveID: $slaveID, pluseLeadRequuired: $pluseLeadRequuired, electricMeterPluse: $electricMeterPluse, voltageL1L2L3Ok: $voltageL1L2L3Ok, ctPhaseOrientationOk: $ctPhaseOrientationOk, currentTestedOk: $currentTestedOk, ctRationOnMeter: $ctRationOnMeter, breakerRating: $breakerRating, mainT1Temperature: $mainT1Temperature, batteryT1Temperature: $batteryT1Temperature, thermalImageNo: $thermalImageNo, thermalImageUrl: $thermalImageUrl, kT12: $kT12, kW: $kW, flowRate: $flowRate, volumeOnMeter: $volumeOnMeter, volumeOnBMS: $volumeOnBMS, note: $note)';
   }
 
   @override
@@ -269,6 +272,7 @@ class Meter {
         other.mainT1Temperature == mainT1Temperature &&
         other.batteryT1Temperature == batteryT1Temperature &&
         other.thermalImageNo == thermalImageNo &&
+        other.thermalImageUrl == thermalImageUrl &&
         other.kT12 == kT12 &&
         other.kW == kW &&
         other.flowRate == flowRate &&
@@ -307,6 +311,7 @@ class Meter {
         mainT1Temperature.hashCode ^
         batteryT1Temperature.hashCode ^
         thermalImageNo.hashCode ^
+        thermalImageUrl.hashCode ^
         kT12.hashCode ^
         kW.hashCode ^
         flowRate.hashCode ^
