@@ -33,6 +33,7 @@ dependencies:
   adaptive_dialog: ^1.1.0
   another_flushbar: ^1.10.22
   flutter_speed_dial:
+    
 
 dev_dependencies:
   flutter_test:

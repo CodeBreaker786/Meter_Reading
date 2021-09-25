@@ -6,6 +6,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:metr_reading/models/report.dart';
 import 'package:metr_reading/screens/create_report_home.dart';
 import 'package:metr_reading/screens/report_viwer.dart';
+import 'package:metr_reading/screens/single_report_view.dart';
 import 'package:metr_reading/services/could_firebase.dart';
 import 'package:metr_reading/utils/const.dart';
 import 'package:metr_reading/widgets/loading_utils.dart';
@@ -17,7 +18,6 @@ class ExistigPage extends StatefulWidget {
 }
 
 class _ExistigPageState extends State<ExistigPage> {
-  final ScrollController _scrollController = ScrollController();
   int repoIndex = 0;
   List<Report> reports = [];
 
@@ -55,215 +55,35 @@ class _ExistigPageState extends State<ExistigPage> {
               reports.clear();
               snapshot.data.docs.forEach(
                   (report) => reports.add(Report.fromMap(report.data())));
-              return PageView.builder(
+              return ListView.separated(
                 scrollDirection: Axis.vertical,
                 itemCount: reports.length,
                 itemBuilder: (context, index) {
                   repoIndex = index;
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            buildInfoRow(
-                              title: 'Contact Name:',
-                              info: reports[index].contactName,
-                            ),
-                            buildInfoRow(
-                              title: 'Client:',
-                              info: reports[index].client,
-                            ),
-                            buildInfoRow(
-                              title: 'Site:',
-                              info: reports[index].site,
-                            ),
-                            buildInfoRow(
-                              title: 'Building',
-                              info: reports[index].building,
-                            ),
-                            buildInfoRow(
-                              title: 'Carried out on: ',
-                              info: df
-                                  .format(reports[index].dateSurveyCarriedOut),
-                            ),
-                            buildInfoRow(
-                              title: 'Carried out on behalf of:',
-                              info: reports[index].carriedoutonbehalfof,
-                            ),
-                            buildInfoRow(
-                              title: 'Carried out by',
-                              info: reports[index].carriedoutonbehalfof,
-                            ),
-                            ExpansionTile(
-                              backgroundColor: Colors.green.withOpacity(.4),
-                              iconColor: Colors.green,
-                              tilePadding: EdgeInsets.symmetric(horizontal: 8),
-                              title: Text("Test Meter Used",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold)),
-                              children: [
-                                buildInfoRow(
-                                  title: 'Meter Type',
-                                  info: reports[index].testMeter.meterType,
-                                ),
-                                buildInfoRow(
-                                  title: 'Meter Make',
-                                  info: reports[index].testMeter.meterMake,
-                                ),
-                                buildInfoRow(
-                                  title: 'Meter Modal',
-                                  info: reports[index].testMeter.meterModel,
-                                ),
-                                buildInfoRow(
-                                  title: 'Meter Serial No',
-                                  info: reports[index].testMeter.serialNumber,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('Certificate ',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold)),
-                                      Container(
-                                        height: 25,
-                                        child: ElevatedButton.icon(
-                                          clipBehavior: Clip.antiAlias,
-                                          icon: Icon(
-                                            Icons.link_sharp,
-                                          ),
-                                          label: Text('Open'),
-                                          onPressed: () async {
-                                            await canLaunch(reports[index]
-                                                    .testMeter
-                                                    .attachCertificate)
-                                                ? await launch(reports[index]
-                                                    .testMeter
-                                                    .attachCertificate)
-                                                : showError(
-                                                    error:
-                                                        "Could not launch url");
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8, bottom: 8),
-                              child: Text("Meters",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            Expanded(
-                              child: reports[index].meters.length != 0
-                                  ? SingleChildScrollView(
-                                      child: ListView.separated(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        controller: _scrollController,
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: reports[index].meters.length,
-                                        itemBuilder: (context, index) {
-                                          return Slidable(
-                                            actionPane:
-                                                SlidableDrawerActionPane(),
-                                            //  actionExtentRatio: 0.25,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.green
-                                                      .withOpacity(.4),
-                                                  borderRadius:
-                                                      BorderRadius.circular(6)),
-                                              child: ListTile(
-                                                leading: CircleAvatar(
-                                                  backgroundColor: Colors.white,
-                                                  backgroundImage: AssetImage(
-                                                    'assets/meter.png',
-                                                  ),
-                                                  foregroundColor: Colors.white,
-                                                ),
-                                                title: Text(reports[repoIndex]
-                                                    .meters[index]
-                                                    .supplyName),
-                                                subtitle: Text(
-                                                    reports[repoIndex]
-                                                        .meters[index]
-                                                        .supplyNumber),
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              IconSlideAction(
-                                                caption: 'Archive',
-                                                color: Colors.blue,
-                                                icon: Icons.archive,
-                                                onTap: () => null,
-                                              ),
-                                              IconSlideAction(
-                                                caption: 'Share',
-                                                color: Colors.indigo,
-                                                icon: Icons.share,
-                                                onTap: () => null,
-                                              ),
-                                            ],
-                                            secondaryActions: <Widget>[
-                                              IconSlideAction(
-                                                caption: 'More',
-                                                color: Colors.black45,
-                                                icon: Icons.more_horiz,
-                                                onTap: () => null,
-                                              ),
-                                              IconSlideAction(
-                                                caption: 'Delete',
-                                                color: Colors.red,
-                                                icon: Icons.delete,
-                                                onTap: () {
-                                                  reports[index]
-                                                      .meters
-                                                      .removeAt(index);
-                                                  setState(() {});
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return Divider(
-                                            height: 1,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  : Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 30),
-                                        child: Text(
-                                          "No Meter added yet ",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.grey),
-                                        ),
-                                      ),
-                                    ),
-                            )
-                          ],
+                  return ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage('assets/report.png'),
+                    ),
+                    title: Text(reports[index].site),
+                    subtitle: Text(reports[index].customerReferenceNo),
+                    trailing: Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SingleReportView(
+                            report: reports[index],
+                          ),
                         ),
-                      ),
+                      );
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Divider(
+                      thickness: 1,
                     ),
                   );
                 },
@@ -272,83 +92,73 @@ class _ExistigPageState extends State<ExistigPage> {
 
             return Center(child: CircularProgressIndicator());
           }),
-      floatingActionButton: SpeedDial(
-          animatedIcon: AnimatedIcons.menu_close,
-          animatedIconTheme: IconThemeData(size: 28.0, color: Colors.white),
-          backgroundColor: Colors.green,
-          visible: true,
-          curve: Curves.bounceInOut,
-          children: [
-            SpeedDialChild(
-              child:
-                  Icon(Icons.create_new_folder_outlined, color: Colors.white),
-              backgroundColor: Colors.green,
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CreateReportPage(),
-                  ),
-                );
-              },
-              label: 'Create New Report',
-              labelStyle:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
-              labelBackgroundColor: Colors.lightGreen[600],
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => CreateReportPage(),
             ),
-            SpeedDialChild(
-              child: Icon(Icons.create_outlined, color: Colors.white),
-              backgroundColor: Colors.green,
-              onTap: () {},
-              label: 'Edit Report',
-              labelStyle:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
-              labelBackgroundColor: Colors.lightGreen[600],
-            ),
-            SpeedDialChild(
-              child: Icon(Icons.view_carousel_outlined, color: Colors.white),
-              backgroundColor: Colors.green,
-              onTap: () async {
-                if (reports.length != 0) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => ReportViwer(
-                        report: reports[repoIndex],
-                      ),
-                    ),
-                  );
-                } else {
-                  showError(
-                      error:
-                          "There is no report Found\nPlaese slect report first");
-                }
-              },
-              label: 'View Report',
-              labelStyle:
-                  TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
-              labelBackgroundColor: Colors.lightGreen[600],
-            )
-          ]),
-    );
-  }
-
-  buildInfoRow({String title, String info}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          Flexible(
-            child: Text(info,
-                overflow: TextOverflow.clip,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey)),
-          ),
-        ],
+          );
+        },
       ),
+
+      // floatingActionButton: SpeedDial(
+      //     animatedIcon: AnimatedIcons.menu_close,
+      //     animatedIconTheme: IconThemeData(size: 28.0, color: Colors.white),
+      //     backgroundColor: Colors.green,
+      //     visible: true,
+      //     curve: Curves.bounceInOut,
+      //     children: [
+      //       SpeedDialChild(
+      //         child:
+      //             Icon(Icons.create_new_folder_outlined, color: Colors.white),
+      //         backgroundColor: Colors.green,
+      //         onTap: () {
+      //           Navigator.of(context).push(
+      //             MaterialPageRoute(
+      //               builder: (_) => CreateReportPage(),
+      //             ),
+      //           );
+      //         },
+      //         label: 'Create New Report',
+      //         labelStyle:
+      //             TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+      //         labelBackgroundColor: Colors.lightGreen[600],
+      //       ),
+      //       SpeedDialChild(
+      //         child: Icon(Icons.create_outlined, color: Colors.white),
+      //         backgroundColor: Colors.green,
+      //         onTap: () {},
+      //         label: 'Edit Report',
+      //         labelStyle:
+      //             TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+      //         labelBackgroundColor: Colors.lightGreen[600],
+      //       ),
+      // SpeedDialChild(
+      //   child: Icon(Icons.view_carousel_outlined, color: Colors.white),
+      //   backgroundColor: Colors.green,
+      //   onTap: () async {
+      //     if (reports.length != 0) {
+      //       Navigator.of(context).push(
+      //         MaterialPageRoute(
+      //           builder: (_) => ReportViwer(
+      //             report: reports[repoIndex],
+      //           ),
+      //         ),
+      //       );
+      //     } else {
+      //       showError(
+      //           error:
+      //               "There is no report Found\nPlaese slect report first");
+      //     }
+      //   },
+      //   label: 'View Report',
+      //   labelStyle:
+      //       TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+      //   labelBackgroundColor: Colors.lightGreen[600],
+      // )
+      // ]),
     );
   }
 }
